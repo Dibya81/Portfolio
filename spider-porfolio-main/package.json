@@ -27,8 +27,5 @@
     "globals": "^17.4.0",
     "tailwindcss": "^4.2.2",
     "vite": "^8.0.13"
-  },
-  "overrides": {
-    "@rolldown/pluginutils": "file:/Users/dibyabhusal/Desktop/projects/spider-porfolio-main/rolldown-pluginutils-1.0.0-rc.6.tgz"
   }
 }
