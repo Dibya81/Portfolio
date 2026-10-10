@@ -1,0 +1,187 @@
+/* ─── Layout: Top Navbar + Main Content ─── */
+
+:root {
+  --nav-h: 64px;
+}
+
+/* ─── Top Navbar ─── */
+#topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--nav-h);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 36px;
+  transition: background 0.4s ease, backdrop-filter 0.4s ease,
+              border-bottom 0.4s ease;
+}
+#topbar.scrolled {
+  background: rgba(12, 12, 12, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+/* Progress bar */
+#progress-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent), #00ffc8);
+  z-index: 300;
+  transition: width 0.08s linear;
+  box-shadow: 0 0 10px rgba(200,255,0,0.6);
+}
+
+/* Logo */
+.nav-logo {
+  font-size: 1.2rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: var(--fg);
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.nav-logo span { color: var(--accent); }
+
+/* Nav links */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.nav-link {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.42);
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: color 0.22s, background 0.22s;
+  white-space: nowrap;
+}
+.nav-link:hover { color: var(--fg); background: rgba(255,255,255,0.05); }
+.nav-link.active { color: var(--accent); background: var(--accent-faint); }
+
+/* Right actions */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.nav-icon-btn {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(255,255,255,0.45);
+  transition: color 0.22s, background 0.22s, border-color 0.22s;
+  cursor: pointer;
+}
+.nav-icon-btn:hover {
+  color: var(--accent);
+  background: var(--accent-faint);
+  border-color: rgba(200,255,0,0.25);
+}
+.nav-icon-btn svg { width: 16px; height: 16px; }
+
+/* Hire me CTA */
+.nav-cta {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #0f0f0f;
+  background: var(--accent);
+  padding: 8px 18px;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: background 0.22s, box-shadow 0.22s, transform 0.22s;
+}
+.nav-cta:hover {
+  background: #d4ff33;
+  box-shadow: 0 0 24px rgba(200,255,0,0.4);
+  transform: translateY(-1px);
+}
+
+/* Hamburger (mobile) */
+#hamburger {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 36px; height: 36px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+#hamburger span {
+  width: 20px; height: 2px;
+  background: var(--fg);
+  border-radius: 2px;
+  transition: all 0.25s;
+}
+#hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+#hamburger.open span:nth-child(2) { opacity: 0; }
+#hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Mobile drawer */
+#mobile-menu {
+  display: none;
+  position: fixed;
+  top: var(--nav-h); left: 0; right: 0;
+  background: rgba(12,12,12,0.96);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 20px 24px;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 190;
+}
+#mobile-menu.open { display: flex; }
+.mobile-nav-link {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.55);
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s;
+}
+.mobile-nav-link:hover { color: var(--fg); background: rgba(255,255,255,0.05); }
+.mobile-nav-link.active { color: var(--accent); background: var(--accent-faint); }
+
+/* ─── Main Content ─── (no padding-top — hero fills viewport, navbar overlays) */
+
+/* ─── Section layout ─── */
+.section {
+  padding: 90px 64px;
+  max-width: 1100px;
+  margin: 0 auto;
+  scroll-margin-top: var(--nav-h); /* prevents navbar covering heading on nav-click */
+}
+.section + .section {
+  /* separation handled by .data-path-divider elements */
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 900px) {
+  .nav-links { display: none; }
+  .nav-cta   { display: none; }
+  #hamburger { display: flex; }
+  .section   { padding: 72px 24px; }
+}
+@media (max-width: 480px) {
+  #topbar  { padding: 0 20px; }
+  .section { padding: 60px 18px; }
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "category": "Programming Languages",
+    "icon": "💻",
+    "skills": ["C", "C++", "Python", "Java", "JavaScript", "SQL"]
+  },
+  {
+    "category": "Web Development",
+    "icon": "🌐",
+    "skills": ["HTML", "CSS", "JavaScript", "Node.js", "Express.js", "REST APIs"]
+  },
+  {
+    "category": "Blockchain & Web3",
+    "icon": "⛓️",
+    "skills": ["Solidity", "Smart Contracts", "Web3.js", "NFT Development", "Flare Blockchain"]
+  },
+  {
+    "category": "Cybersecurity",
+    "icon": "🔐",
+    "skills": ["Ethical Hacking", "Network Security", "Nmap", "Wireshark", "Prompt Injection Defense", "Secure System Architecture"]
+  },
+  {
+    "category": "IoT & Embedded Systems",
+    "icon": "🔧",
+    "skills": ["ESP32", "Microcontroller Programming", "Sensor Integration", "Hardware Automation"]
+  },
+  {
+    "category": "Developer Tools",
+    "icon": "🛠️",
+    "skills": ["Git", "GitHub", "VS Code", "Arduino IDE", "Kali Linux", "AWS Bedrock"]
+  }
+]

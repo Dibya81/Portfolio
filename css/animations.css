@@ -1,0 +1,154 @@
+/* ─── Fade-up on scroll ─── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.75s cubic-bezier(0.16,1,0.3,1),
+              transform 0.75s cubic-bezier(0.16,1,0.3,1);
+}
+.fade-up.in-view { opacity: 1; transform: none; }
+
+/* ─── Staggered children ─── */
+.stagger > *           { transition-delay: 0ms; }
+.stagger > *:nth-child(1) { transition-delay: 0ms;   }
+.stagger > *:nth-child(2) { transition-delay: 80ms;  }
+.stagger > *:nth-child(3) { transition-delay: 160ms; }
+.stagger > *:nth-child(4) { transition-delay: 240ms; }
+.stagger > *:nth-child(5) { transition-delay: 320ms; }
+.stagger > *:nth-child(6) { transition-delay: 400ms; }
+
+/* ─── Canvas breathe ─── */
+@keyframes breathe-anim { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+/* ─── Hover glow on accent buttons ─── */
+.btn-glow {
+  position: relative;
+  overflow: hidden;
+}
+.btn-glow::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: conic-gradient(from 180deg, var(--accent), transparent, var(--accent));
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.btn-glow:hover::after { opacity: 0.6; }
+
+/* ─── Sidebar nav active indicator slide ─── */
+@keyframes slide-in {
+  from { transform: translateX(-100%); opacity: 0; }
+  to   { transform: translateX(0);     opacity: 1; }
+}
+.nav-item.active::before {
+  animation: slide-in 0.25s cubic-bezier(0.16,1,0.3,1);
+}
+
+/* ─── Section header underline ─── */
+.section-header {
+  margin-bottom: 40px;
+  position: relative;
+  padding-bottom: 16px;
+}
+.section-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 40px; height: 2px;
+  background: var(--accent);
+  border-radius: 2px;
+  box-shadow: 0 0 8px rgba(200,255,0,0.5);
+}
+
+/* ─── Glowing Data-Path Dividers ─── */
+.data-path-divider {
+  width: 100%;
+  height: 1px;
+  position: relative;
+  overflow: hidden;
+  background: transparent;
+  margin: 0;
+}
+.data-path-divider::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.05);
+}
+.data-path-divider::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -40%;
+  width: 40%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(200,255,0,0.7), transparent);
+  animation: data-pulse 3.5s ease-in-out infinite;
+}
+@keyframes data-pulse {
+  0%   { left: -40%; opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { left: 140%; opacity: 0; }
+}
+
+/* ─── Featured project glow border pulse ─── */
+@keyframes border-pulse {
+  0%, 100% { border-color: rgba(200,255,0,0.15); }
+  50%       { border-color: rgba(200,255,0,0.35); }
+}
+.project-card.featured {
+  animation: border-pulse 3s ease-in-out infinite;
+}
+.project-card.featured:hover {
+  animation: none;
+  border-color: rgba(200,255,0,0.45);
+}
+
+/* ─── Skill tag hover ─── */
+.skill-tag {
+  transition: color 0.2s, background 0.2s, border-color 0.2s, transform 0.2s;
+}
+.skill-tag:hover { transform: scale(1.05); }
+
+/* ─── Contact card lift ─── */
+.contact-card {
+  transition: transform 0.3s cubic-bezier(0.16,1,0.3,1),
+              border-color 0.3s, box-shadow 0.3s;
+}
+.contact-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--border-hover);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+}
+
+/* ─── Loading screen ─── */
+#loading-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-primary);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  transition: opacity 0.6s ease, visibility 0.6s;
+}
+#loading-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.loader-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--fg);
+  letter-spacing: -0.02em;
+}
+.loader-bar {
+  width: 160px; height: 2px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.loader-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}

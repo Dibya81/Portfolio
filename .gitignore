@@ -1,0 +1,30 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node dependencies
+node_modules/
+**/node_modules/
+spider-porfolio-main/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Vite cache & temp
+.vite/
+dist-ssr/
+*.local
+
+# Environment & IDE
+.env
+.env.*
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Older archive & dev bundles
+Portfolio-main/
+spider-porfolio-main/*.tgz
+spider-porfolio-main/eslint.config.js
+spider-porfolio-main/src/

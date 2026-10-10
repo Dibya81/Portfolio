@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dibya Bhusal — Emerging Tech Developer</title>
+  <meta name="description" content="Dibya Bhusal — IoT, Cybersecurity, Blockchain & Full Stack Developer. Bold problem solver building secure and intelligent systems." />
+  <meta name="keywords" content="Dibya Bhusal, IoT, Cybersecurity, Blockchain, Full Stack, Nepal" />
+  <meta name="author" content="Dibya Bhusal" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="stylesheet" href="./css/layout.css" />
+  <link rel="stylesheet" href="./css/components.css" />
+  <link rel="stylesheet" href="./css/animations.css" />
+
+  <!-- Extra inline styles for particles canvas in about section z-layering -->
+  <style>
+    #about > *:not(canvas) { position: relative; z-index: 1; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body>
+
+  <!-- ─── Loading Screen ─── -->
+  <div id="loading-screen">
+    <div class="loader-name mono">DB.</div>
+    <div class="loader-bar"><div class="loader-fill" style="width:0%"></div></div>
+    <p style="font-size:0.68rem;color:rgba(255,255,255,0.18);letter-spacing:0.12em;margin-top:4px">Initializing…</p>
+  </div>
+
+  <!-- ─── Progress Bar ─── -->
+  <div id="progress-bar"></div>
+
+  <!-- ─── TOP NAVBAR ─── -->
+  <nav id="topbar" role="navigation" aria-label="Main navigation">
+    <!-- Logo -->
+    <a href="#hero" class="nav-logo magnetic" data-target="hero">DB<span>.</span></a>
+
+    <!-- Center links (desktop) -->
+    <div class="nav-links">
+      <span class="nav-link active" data-target="hero">Home</span>
+      <span class="nav-link" data-target="about">About</span>
+      <span class="nav-link" data-target="education">Education</span>
+      <span class="nav-link" data-target="skills">Skills</span>
+      <span class="nav-link" data-target="projects">Projects</span>
+      <span class="nav-link" data-target="certificates">Certificates</span>
+      <span class="nav-link" data-target="extras">More</span>
+      <span class="nav-link" data-target="contact">Contact</span>
+    </div>
+
+    <!-- Right actions -->
+    <div class="nav-actions">
+      <a href="https://github.com/Dibya81" target="_blank" rel="noopener" class="nav-icon-btn magnetic" title="GitHub">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+      </a>
+      <a href="https://www.linkedin.com/in/dibya-bhusal" target="_blank" rel="noopener" class="nav-icon-btn magnetic" title="LinkedIn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+      </a>
+      <a href="mailto:dibyabhusal81@gmail.com" class="nav-cta magnetic">Hire Me ↗</a>
+      <a href="./spider-porfolio-main/dist/index.html" target="_blank" rel="noopener" class="nav-cta magnetic" style="background:rgba(255,0,0,0.1);border-color:rgba(255,0,0,0.2);color:#ff4d4d">Spider Man View 🕸️</a>
+      <button id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ─── Mobile Menu ─── -->
+  <div id="mobile-menu">
+    <span class="mobile-nav-link active" data-target="hero">🏠 Home</span>
+    <span class="mobile-nav-link" data-target="about">👤 About</span>
+    <span class="mobile-nav-link" data-target="education">🎓 Education</span>
+    <span class="mobile-nav-link" data-target="skills">⚡ Skills</span>
+    <span class="mobile-nav-link" data-target="projects">🚀 Projects</span>
+    <span class="mobile-nav-link" data-target="certificates">📜 Certificates</span>
+    <span class="mobile-nav-link" data-target="extras">🏏 Extracurricular</span>
+    <span class="mobile-nav-link" data-target="contact">📬 Contact</span>
+  </div>
+
+  <!-- ─── MAIN CONTENT ─── -->
+  <main id="main-content">
+
+    <!-- ══ HERO: Canvas Scrollytelling ══ -->
+    <div id="hero" role="banner">
+      <div id="sticky-hero">
+        <canvas id="bg-canvas"></canvas>
+        <div id="vignette"></div>
+
+        <div id="hero-overlay">
+          <!-- Section 1: centered hero -->
+          <div class="hero-section" id="hsec1">
+            <p class="label-tag" style="text-align:center;font-family:'JetBrains Mono',monospace">[ Emerging Tech Developer ]</p>
+            <h1 class="hero-name" id="hero-name" data-text="Dibya Bhusal.">Dibya Bhusal.</h1>
+            <p class="hero-sub">IoT · Cybersecurity · Blockchain · Full Stack</p>
+            <p class="hero-tagline">Bold Problem Solver | Building Secure and Intelligent Systems</p>
+            <div style="display:flex;gap:12px;justify-content:center;margin-top:24px;flex-wrap:wrap">
+              <a href="mailto:dibyabhusal81@gmail.com" class="nav-cta magnetic">Hire Me ↗</a>
+              <a href="./resume/Resume.pdf?v=2" target="_blank" rel="noopener" class="nav-cta magnetic" style="background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.1);color:var(--fg)">View Resume 👁️</a>
+              <a href="./spider-porfolio-main/dist/index.html" target="_blank" rel="noopener" class="nav-cta magnetic" style="background:rgba(255,0,0,0.1);border-color:rgba(255,0,0,0.2);color:#ff4d4d">Spider Man View 🕸️</a>
+            </div>
+            <div id="scroll-cue">
+              <span>Scroll</span>
+              <div class="scue-line"></div>
+            </div>
+          </div>
+
+          <!-- Section 2: left -->
+          <div class="hero-section left" id="hsec2">
+            <p class="label-tag">What I Do</p>
+            <h2 class="hero-heading">
+              I build<br>
+              <span class="g-cyan">intelligent systems</span>.
+            </h2>
+            <p class="hero-body">
+              Combining software engineering, hardware integration, and security principles to solve real-world problems.
+            </p>
+          </div>
+
+          <!-- Section 3: right -->
+          <div class="hero-section right" id="hsec3">
+            <p class="label-tag">My Focus</p>
+            <h2 class="hero-heading">
+              Secure.<br>
+              <span class="g-orange">Scalable. Impactful.</span>
+            </h2>
+            <p class="hero-body right">
+              From AI verification platforms to blockchain knowledge systems and IoT automation — built right from the ground up.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ CERTIFICATE MARQUEE (Dashboard) ══ -->
+    <div id="cert-dashboard">
+      <div class="cert-dashboard-header">
+        <span class="label-tag" style="margin-bottom:0">My Achievements</span>
+        <h2 class="cert-dashboard-title">Certificates &amp; Awards</h2>
+        <p class="cert-dashboard-sub">Drag to pause · Click to open</p>
+      </div>
+      <div class="marquee-outer" id="marquee-outer">
+        <div class="marquee-track" id="marquee-track">
+          <!-- First set -->
+          <div class="marquee-card" onclick="openLightbox('./images/Google Cloude.png','Google Cloud Certificate')"><img src="./images/Google Cloude.png" alt="Google Cloud"/><div class="marquee-label">Google Cloud</div></div>
+          <div class="marquee-card" onclick="openLightbox('./images/Data Fundamental.jpg','Data Fundamentals')"><img src="./images/Data Fundamental.jpg" alt="Data Fundamentals"/><div class="marquee-label">Data Fundamentals</div></div>
+          <div class="marquee-card" onclick="openLightbox('./images/hackathon.jpg','Hackathon')"><img src="./images/hackathon.jpg" alt="Hackathon"/><div class="marquee-label">Hackathon</div></div>
+          <div class="marquee-card" onclick="openLightbox('./images/math.jpeg.png','Mathematics')"><img src="./images/math.jpeg.png" alt="Mathematics"/><div class="marquee-label">Mathematics</div></div>
+          <div class="marquee-card" onclick="openLightbox('./images/hackathon-2025.jpg','Code Crusade 2025 Hackathon')"><img src="./images/hackathon-2025.jpg" alt="Code Crusade 2025"/><div class="marquee-label">Code Crusade 2025</div></div>
+          <div class="marquee-card" onclick="openLightbox('./images/cyber-intern-1.png','Cybersecurity Internship')"><img src="./images/cyber-intern-1.png" alt="Cyber Intern"/><div class="marquee-label">Cyber Internship</div></div>
+          <div class="marquee-card" onclick="openLightbox('./images/cyber-intern-2.png','Cybersecurity Internship 2')"><img src="./images/cyber-intern-2.png" alt="Cyber Intern 2"/><div class="marquee-label">Cyber Internship II</div></div>
+          <!-- Duplicate set for seamless loop -->
+          <div class="marquee-card" onclick="openLightbox('./images/Google Cloude.png','Google Cloud Certificate')"><img src="./images/Google Cloude.png" alt="Google Cloud"/><div class="marquee-label">Google Cloud</div></div>
+          <div class="marquee-card" onclick="openLightbox('./images/Data Fundamental.jpg','Data Fundamentals')"><img src="./images/Data Fundamental.jpg" alt="Data Fundamentals"/><div class="marquee-label">Data Fundamentals</div></div>
+          <div class="marquee-card" onclick="openLightbox('./images/hackathon.jpg','Hackathon')"><img src="./images/hackathon.jpg" alt="Hackathon"/><div class="marquee-label">Hackathon</div></div>
+          <div class="marquee-card" onclick="openLightbox('./images/math.jpeg.png','Mathematics')"><img src="./images/math.jpeg.png" alt="Mathematics"/><div class="marquee-label">Mathematics</div></div>
+          <div class="marquee-card" onclick="openLightbox('./images/hackathon-2025.jpg','Code Crusade 2025 Hackathon')"><img src="./images/hackathon-2025.jpg" alt="Code Crusade 2025"/><div class="marquee-label">Code Crusade 2025</div></div>
+          <div class="marquee-card" onclick="openLightbox('./images/cyber-intern-1.png','Cybersecurity Internship')"><img src="./images/cyber-intern-1.png" alt="Cyber Intern"/><div class="marquee-label">Cyber Internship</div></div>
+          <div class="marquee-card" onclick="openLightbox('./images/cyber-intern-2.png','Cybersecurity Internship 2')"><img src="./images/cyber-intern-2.png" alt="Cyber Intern 2"/><div class="marquee-label">Cyber Internship II</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ LIGHTBOX MODAL ══ -->
+    <div id="lightbox" onclick="closeLightbox()">
+      <button class="lb-close" onclick="closeLightbox()">✕</button>
+      <img id="lb-img" src="" alt="" onclick="event.stopPropagation()" />
+      <p id="lb-caption"></p>
+    </div>
+
+    <!-- ══ DATA PATH DIVIDER ══ -->
+    <div class="data-path-divider"></div>
+
+    <!-- ══ ABOUT ══ -->
+    <section id="about" class="section">
+      <div class="section-header fade-up">
+        <span class="label-tag">About Me</span>
+        <h2 class="section-title">Who I Am</h2>
+      </div>
+      <div class="fade-up" style="max-width:720px">
+        <p style="margin-bottom:16px">
+          Hello! I'm <strong style="color:var(--fg)">Dibya Bhusal</strong>, a passionate B.Tech Computer Science student
+          specializing in <strong style="color:var(--accent)">Internet of Things, Cybersecurity, and Blockchain Technology</strong>.
+        </p>
+        <p style="margin-bottom:16px">
+          I enjoy building systems that combine <strong style="color:var(--fg)">software engineering, hardware integration,
+          and security principles</strong> to solve real-world problems.
+        </p>
+        <p style="margin-bottom:16px">
+          My work spans across <strong style="color:var(--fg)">AI systems, blockchain applications, cybersecurity frameworks,
+          and IoT automation projects</strong>. I focus on technologies that are
+          <strong style="color:var(--accent)">secure, scalable, and impactful</strong>.
+        </p>
+        <p style="margin-bottom:16px">
+          Recent highlights: <strong style="color:var(--fg)">AI verification platforms,
+          blockchain-based knowledge NFTs, and IoT irrigation automation</strong>.
+        </p>
+        <p>
+          Off-screen: <strong style="color:var(--fg)">competitive cricket, exploring emerging tech, contributing to developer communities</strong>.
+        </p>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:28px;align-items:center">
+          <span style="display:inline-flex;align-items:center;gap:7px;padding:7px 16px;border-radius:999px;font-size:0.7rem;font-weight:600;background:rgba(200,255,0,0.08);border:1px solid rgba(200,255,0,0.18);color:rgba(200,255,0,0.85)">
+            <span class="pulse-dot"></span> Open to opportunities
+          </span>
+          <span style="font-size:0.78rem;color:var(--fg-muted)">📍 Surkhet, Nepal · Bengaluru, India</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ DATA PATH DIVIDER ══ -->
+    <div class="data-path-divider" style="animation-delay:0.8s"></div>
+
+    <!-- ══ EDUCATION & EXPERIENCE ══ -->
+    <section id="education" class="section">
+      <div class="section-header fade-up">
+        <span class="label-tag">Education & Experience</span>
+        <h2 class="section-title">Background</h2>
+      </div>
+
+      <div class="glass-card edu-card fade-up" style="margin-bottom:20px">
+        <div class="edu-header">
+          <div>
+            <h3 style="color:var(--fg);font-size:1.05rem;font-weight:700">REVA University</h3>
+            <p style="margin-top:4px;font-size:0.85rem;color:var(--fg-muted)">B.Tech in Computer Science and Engineering</p>
+            <p style="font-size:0.78rem;color:var(--fg-muted);margin-top:4px">📍 Bengaluru, India</p>
+          </div>
+          <span class="edu-badge">Current</span>
+        </div>
+        <div>
+          <p style="font-size:0.68rem;color:var(--fg-faint);text-transform:uppercase;letter-spacing:0.15em;margin-bottom:10px;font-weight:600">Specialization</p>
+          <div class="specializations">
+            <span class="spec-tag">🔗 Internet of Things</span>
+            <span class="spec-tag">🔐 Cyber Security</span>
+            <span class="spec-tag">⛓️ Blockchain Technology</span>
+          </div>
+        </div>
+        <div>
+          <p style="font-size:0.68rem;color:var(--fg-faint);text-transform:uppercase;letter-spacing:0.15em;margin-bottom:10px;margin-top:16px;font-weight:600">Relevant Coursework</p>
+          <div class="coursework-grid">
+            <span class="tech-tag">Data Structures</span><span class="tech-tag">Algorithms</span>
+            <span class="tech-tag">Cyber Security</span><span class="tech-tag">Blockchain Technology</span>
+            <span class="tech-tag">Internet of Things</span><span class="tech-tag">Quantum Computing</span>
+            <span class="tech-tag">Artificial Intelligence</span><span class="tech-tag">Software Engineering</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-card exp-card fade-up">
+        <div class="exp-header">
+          <h3 style="color:var(--fg);font-size:1.05rem;font-weight:700">Cyber Security Intern</h3>
+          <span class="exp-duration">June 2025 – Aug 2025</span>
+        </div>
+        <p style="font-size:0.86rem;color:var(--fg-muted);line-height:1.75">
+          Worked on analyzing network vulnerabilities and implementing cybersecurity practices in real-world industrial
+          systems. Applied penetration testing techniques and network monitoring tools while collaborating with engineers on secure system design.
+        </p>
+        <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:14px">
+          <span class="tech-tag">Penetration Testing</span><span class="tech-tag">Network Monitoring</span>
+          <span class="tech-tag">Vulnerability Analysis</span><span class="tech-tag">Secure System Design</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ DATA PATH DIVIDER ══ -->
+    <div class="data-path-divider" style="animation-delay:1.6s"></div>
+
+    <!-- ══ SKILLS ══ -->
+    <section id="skills" class="section">
+      <div class="section-header fade-up">
+        <span class="label-tag">Technical Skills</span>
+        <h2 class="section-title">What I Know</h2>
+      </div>
+      <div id="skills-container">
+        <p class="muted" style="font-size:0.85rem">Loading skills…</p>
+      </div>
+    </section>
+
+    <!-- ══ DATA PATH DIVIDER ══ -->
+    <div class="data-path-divider" style="animation-delay:2.4s"></div>
+
+    <!-- ══ PROJECTS ══ -->
+    <section id="projects" class="section">
+      <div class="section-header fade-up">
+        <span class="label-tag">Selected Work</span>
+        <h2 class="section-title">Projects</h2>
+        <p style="margin-top:12px;max-width:560px;font-size:0.9rem">
+          Building at the intersection of AI, blockchain, cybersecurity, and IoT.
+          <span style="color:var(--accent)">⭐ Featured</span> projects highlight the most impactful work.
+        </p>
+      </div>
+      <div id="projects-container">
+        <p class="muted" style="font-size:0.85rem">Loading projects…</p>
+      </div>
+    </section>
+
+    <!-- ══ DATA PATH DIVIDER ══ -->
+    <div class="data-path-divider" style="animation-delay:3.2s"></div>
+
+    <!-- ══ EXTRACURRICULAR ══ -->
+    <section id="extras" class="section">
+      <div class="section-header fade-up">
+        <span class="label-tag">Beyond Code</span>
+        <h2 class="section-title">Hobbies & Life</h2>
+      </div>
+
+      <!-- ─── Cricket ─── -->
+      <div class="hobby-block fade-up">
+        <div class="hobby-title-row">
+          <span class="hobby-emoji">🏏</span>
+          <div>
+            <h3 class="hobby-heading">State-Level Cricket Player</h3>
+            <p class="hobby-sub">U16 &amp; U19 National Tournaments · Represented state team</p>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-left:auto">
+            <span class="tech-tag">Leadership</span><span class="tech-tag">Discipline</span>
+            <span class="tech-tag">Team Play</span>
+          </div>
+        </div>
+        <div class="gallery-grid">
+          <div class="gallery-item" onclick="openLightbox('./cricket/WhatsApp Image 2025-07-27 at 16.20.35 (1).jpeg','Cricket - Match moment')">
+            <img src="./cricket/WhatsApp Image 2025-07-27 at 16.20.35 (1).jpeg" alt="Cricket 1" loading="lazy" />
+            <div class="gallery-overlay"><span>View</span></div>
+          </div>
+          <div class="gallery-item" onclick="openLightbox('./cricket/WhatsApp Image 2025-07-27 at 16.20.35.jpeg','Cricket - Team moment')">
+            <img src="./cricket/WhatsApp Image 2025-07-27 at 16.20.35.jpeg" alt="Cricket 2" loading="lazy" />
+            <div class="gallery-overlay"><span>View</span></div>
+          </div>
+          <div class="gallery-item" onclick="openLightbox('./cricket/WhatsApp Image 2025-07-27 at 16.20.36.jpeg','Cricket - Tournament')">
+            <img src="./cricket/WhatsApp Image 2025-07-27 at 16.20.36.jpeg" alt="Cricket 3" loading="lazy" />
+            <div class="gallery-overlay"><span>View</span></div>
+          </div>
+          <!-- Videos -->
+          <div class="gallery-item video-item" onclick="toggleVideo(this)" role="button" tabindex="0" title="Click to play/pause">
+            <video src="./cricket/WhatsApp Video 2025-07-27 at 16.19.58.mp4" muted loop playsinline preload="metadata" onmouseenter="this.play()" onmouseleave="this.pause()"></video>
+            <div class="gallery-overlay play-icon"><span>▶</span></div>
+          </div>
+          <div class="gallery-item video-item" onclick="toggleVideo(this)" role="button" tabindex="0" title="Click to play/pause">
+            <video src="./cricket/WhatsApp Video 2025-07-27 at 16.20.06.mp4" muted loop playsinline preload="metadata" onmouseenter="this.play()" onmouseleave="this.pause()"></video>
+            <div class="gallery-overlay play-icon"><span>▶</span></div>
+          </div>
+          <div class="gallery-item video-item" onclick="toggleVideo(this)" role="button" tabindex="0" title="Click to play/pause">
+            <video src="./cricket/WhatsApp Video 2025-07-27 at 16.20.08.mp4" muted loop playsinline preload="metadata" onmouseenter="this.play()" onmouseleave="this.pause()"></video>
+            <div class="gallery-overlay play-icon"><span>▶</span></div>
+          </div>
+          <div class="gallery-item video-item" onclick="toggleVideo(this)" role="button" tabindex="0" title="Click to play/pause">
+            <video src="./cricket/WhatsApp Video 2025-07-27 at 16.20.12.mp4" muted loop playsinline preload="metadata" onmouseenter="this.play()" onmouseleave="this.pause()"></video>
+            <div class="gallery-overlay play-icon"><span>▶</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── Photography ─── -->
+      <div class="hobby-block fade-up" style="margin-top:48px">
+        <div class="hobby-title-row">
+          <span class="hobby-emoji">📸</span>
+          <div>
+            <h3 class="hobby-heading">Photography</h3>
+            <p class="hobby-sub">Capturing moments through the lens</p>
+          </div>
+        </div>
+        <div class="gallery-grid photo-grid">
+          <div class="gallery-item" onclick="openLightbox('./photography/WhatsApp Image 2025-07-27 at 16.18.11.jpeg','Photography')"><img src="./photography/WhatsApp Image 2025-07-27 at 16.18.11.jpeg" alt="Photo" loading="lazy"/><div class="gallery-overlay"><span>View</span></div></div>
+          <div class="gallery-item" onclick="openLightbox('./photography/WhatsApp Image 2025-07-27 at 16.18.12.jpeg','Photography')"><img src="./photography/WhatsApp Image 2025-07-27 at 16.18.12.jpeg" alt="Photo" loading="lazy"/><div class="gallery-overlay"><span>View</span></div></div>
+          <div class="gallery-item" onclick="openLightbox('./photography/WhatsApp Image 2025-07-27 at 16.18.13 (1).jpeg','Photography')"><img src="./photography/WhatsApp Image 2025-07-27 at 16.18.13 (1).jpeg" alt="Photo" loading="lazy"/><div class="gallery-overlay"><span>View</span></div></div>
+          <div class="gallery-item" onclick="openLightbox('./photography/WhatsApp Image 2025-07-27 at 16.18.13.jpeg','Photography')"><img src="./photography/WhatsApp Image 2025-07-27 at 16.18.13.jpeg" alt="Photo" loading="lazy"/><div class="gallery-overlay"><span>View</span></div></div>
+          <div class="gallery-item" onclick="openLightbox('./photography/WhatsApp Image 2025-07-27 at 16.18.17 (1).jpeg','Photography')"><img src="./photography/WhatsApp Image 2025-07-27 at 16.18.17 (1).jpeg" alt="Photo" loading="lazy"/><div class="gallery-overlay"><span>View</span></div></div>
+          <div class="gallery-item" onclick="openLightbox('./photography/WhatsApp Image 2025-07-27 at 16.18.17.jpeg','Photography')"><img src="./photography/WhatsApp Image 2025-07-27 at 16.18.17.jpeg" alt="Photo" loading="lazy"/><div class="gallery-overlay"><span>View</span></div></div>
+          <div class="gallery-item" onclick="openLightbox('./photography/WhatsApp Image 2025-07-27 at 16.18.18.jpeg','Photography')"><img src="./photography/WhatsApp Image 2025-07-27 at 16.18.18.jpeg" alt="Photo" loading="lazy"/><div class="gallery-overlay"><span>View</span></div></div>
+          <div class="gallery-item" onclick="openLightbox('./photography/WhatsApp Image 2025-07-27 at 16.18.19 (1).jpeg','Photography')"><img src="./photography/WhatsApp Image 2025-07-27 at 16.18.19 (1).jpeg" alt="Photo" loading="lazy"/><div class="gallery-overlay"><span>View</span></div></div>
+          <div class="gallery-item" onclick="openLightbox('./photography/WhatsApp Image 2025-07-27 at 16.18.19 (2).jpeg','Photography')"><img src="./photography/WhatsApp Image 2025-07-27 at 16.18.19 (2).jpeg" alt="Photo" loading="lazy"/><div class="gallery-overlay"><span>View</span></div></div>
+          <div class="gallery-item" onclick="openLightbox('./photography/WhatsApp Image 2025-07-27 at 16.18.19.jpeg','Photography')"><img src="./photography/WhatsApp Image 2025-07-27 at 16.18.19.jpeg" alt="Photo" loading="lazy"/><div class="gallery-overlay"><span>View</span></div></div>
+          <div class="gallery-item" onclick="openLightbox('./photography/WhatsApp Image 2025-07-27 at 16.18.21 (1).jpeg','Photography')"><img src="./photography/WhatsApp Image 2025-07-27 at 16.18.21 (1).jpeg" alt="Photo" loading="lazy"/><div class="gallery-overlay"><span>View</span></div></div>
+          <div class="gallery-item" onclick="openLightbox('./photography/WhatsApp Image 2025-07-27 at 16.18.21.jpeg','Photography')"><img src="./photography/WhatsApp Image 2025-07-27 at 16.18.21.jpeg" alt="Photo" loading="lazy"/><div class="gallery-overlay"><span>View</span></div></div>
+          <div class="gallery-item" onclick="openLightbox('./photography/WhatsApp Image 2025-07-27 at 16.18.22 (1).jpeg','Photography')"><img src="./photography/WhatsApp Image 2025-07-27 at 16.18.22 (1).jpeg" alt="Photo" loading="lazy"/><div class="gallery-overlay"><span>View</span></div></div>
+          <div class="gallery-item" onclick="openLightbox('./photography/WhatsApp Image 2025-07-27 at 16.18.22.jpeg','Photography')"><img src="./photography/WhatsApp Image 2025-07-27 at 16.18.22.jpeg" alt="Photo" loading="lazy"/><div class="gallery-overlay"><span>View</span></div></div>
+          <div class="gallery-item" onclick="openLightbox('./photography/WhatsApp Image 2025-07-27 at 16.18.23.jpeg','Photography')"><img src="./photography/WhatsApp Image 2025-07-27 at 16.18.23.jpeg" alt="Photo" loading="lazy"/><div class="gallery-overlay"><span>View</span></div></div>
+          <div class="gallery-item" onclick="openLightbox('./photography/WhatsApp Image 2025-07-27 at 16.18.24.jpeg','Photography')"><img src="./photography/WhatsApp Image 2025-07-27 at 16.18.24.jpeg" alt="Photo" loading="lazy"/><div class="gallery-overlay"><span>View</span></div></div>
+          <div class="gallery-item" onclick="openLightbox('./photography/WhatsApp Image 2025-07-27 at 16.18.25.jpeg','Photography')"><img src="./photography/WhatsApp Image 2025-07-27 at 16.18.25.jpeg" alt="Photo" loading="lazy"/><div class="gallery-overlay"><span>View</span></div></div>
+          <div class="gallery-item" onclick="openLightbox('./photography/WhatsApp Image 2025-07-27 at 16.18.26 (1).jpeg','Photography')"><img src="./photography/WhatsApp Image 2025-07-27 at 16.18.26 (1).jpeg" alt="Photo" loading="lazy"/><div class="gallery-overlay"><span>View</span></div></div>
+          <div class="gallery-item" onclick="openLightbox('./photography/WhatsApp Image 2025-07-27 at 16.18.26.jpeg','Photography')"><img src="./photography/WhatsApp Image 2025-07-27 at 16.18.26.jpeg" alt="Photo" loading="lazy"/><div class="gallery-overlay"><span>View</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ DATA PATH DIVIDER ══ -->
+    <div class="data-path-divider" style="animation-delay:3.2s"></div>
+
+    <!-- ══ CERTIFICATES ══ -->
+    <section id="certificates" class="section">
+      <div class="section-header fade-up">
+        <span class="label-tag">Achievements</span>
+        <h2 class="section-title">Certificates</h2>
+      </div>
+      <div class="cert-gallery fade-up">
+        <div class="gallery-item cert-img-item" onclick="openLightbox('./images/Google Cloude.png','Google Cloud Certificate')">
+          <img src="./images/Google Cloude.png" alt="Google Cloud" loading="lazy"/>
+          <div class="gallery-overlay"><span>View</span></div>
+          <div class="cert-label">Google Cloud — Prompt Design in Vertex AI</div>
+        </div>
+        <div class="gallery-item cert-img-item" onclick="openLightbox('./images/Data Fundamental.jpg','Data Fundamentals Certificate')">
+          <img src="./images/Data Fundamental.jpg" alt="Data Fundamentals" loading="lazy"/>
+          <div class="gallery-overlay"><span>View</span></div>
+          <div class="cert-label">Data Fundamentals</div>
+        </div>
+        <div class="gallery-item cert-img-item" onclick="openLightbox('./images/hackathon.jpg','Hackathon Certificate')">
+          <img src="./images/hackathon.jpg" alt="Hackathon" loading="lazy"/>
+          <div class="gallery-overlay"><span>View</span></div>
+          <div class="cert-label">Hackathon Certificate</div>
+        </div>
+        <div class="gallery-item cert-img-item" onclick="openLightbox('./images/hackathon-2025.jpg','Code Crusade 2025 Hackathon')">
+          <img src="./images/hackathon-2025.jpg" alt="Code Crusade 2025" loading="lazy"/>
+          <div class="gallery-overlay"><span>View</span></div>
+          <div class="cert-label">Code Crusade 2025 — Hackathon</div>
+        </div>
+        <div class="gallery-item cert-img-item" onclick="openLightbox('./images/math.jpeg.png','Math Certificate')">
+          <img src="./images/math.jpeg.png" alt="Math" loading="lazy"/>
+          <div class="gallery-overlay"><span>View</span></div>
+          <div class="cert-label">Mathematics Achievement</div>
+        </div>
+        <div class="gallery-item cert-img-item" onclick="openLightbox('./images/cyber-intern-1.png','Cybersecurity Internship')">
+          <img src="./images/cyber-intern-1.png" alt="Cybersecurity Intern" loading="lazy"/>
+          <div class="gallery-overlay"><span>View</span></div>
+          <div class="cert-label">Cybersecurity Internship</div>
+        </div>
+        <div class="gallery-item cert-img-item" onclick="openLightbox('./images/cyber-intern-2.png','Cybersecurity Internship 2')">
+          <img src="./images/cyber-intern-2.png" alt="Cybersecurity Intern 2" loading="lazy"/>
+          <div class="gallery-overlay"><span>View</span></div>
+          <div class="cert-label">Cybersecurity Internship — Details</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ DATA PATH DIVIDER ══ -->
+    <div class="data-path-divider" style="animation-delay:4s"></div>
+
+    <!-- ══ CONTACT ══ -->
+    <section id="contact" class="section">
+      <div class="section-header fade-up">
+        <span class="label-tag">Get In Touch</span>
+        <h2 class="section-title">Contact</h2>
+      </div>
+      <div class="contact-grid fade-up">
+        <a href="mailto:dibyabhusal81@gmail.com" class="glass-card contact-card magnetic">
+          <div class="contact-icon"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+          <div><div class="contact-label">Email</div><div class="contact-value">dibyabhusal81@gmail.com</div></div>
+        </a>
+        <a href="tel:+919035504514" class="glass-card contact-card magnetic">
+          <div class="contact-icon"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.62 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div><div class="contact-label">Phone</div><div class="contact-value">+91 9035504514</div></div>
+        </a>
+        <a href="https://github.com/Dibya81" target="_blank" rel="noopener" class="glass-card contact-card magnetic">
+          <div class="contact-icon"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></div>
+          <div><div class="contact-label">GitHub</div><div class="contact-value">github.com/Dibya81</div></div>
+        </a>
+        <a href="https://www.linkedin.com/in/dibya-bhusal" target="_blank" rel="noopener" class="glass-card contact-card magnetic">
+          <div class="contact-icon"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></div>
+          <div><div class="contact-label">LinkedIn</div><div class="contact-value">linkedin.com/in/dibya-bhusal</div></div>
+        </a>
+        <div class="glass-card contact-card" style="cursor:default">
+          <div class="contact-icon"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div><div class="contact-label">Location</div><div class="contact-value">Surkhet, Nepal</div></div>
+        </div>
+        <a href="./resume/Resume.pdf?v=2" target="_blank" rel="noopener" class="glass-card contact-card magnetic">
+          <div class="contact-icon"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg></div>
+          <div><div class="contact-label">Resume</div><div class="contact-value">View PDF ↗</div></div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ══ FOOTER ══ -->
+    <footer style="padding:24px 64px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+      <p style="font-size:0.72rem;color:var(--fg-faint)">© 2026 Dibya Bhusal. All rights reserved.</p>
+      <p style="font-size:0.72rem;color:var(--fg-faint);font-family:'JetBrains Mono',monospace">[HTML · CSS · JavaScript]</p>
+    </footer>
+
+  </main>
+
+  <!-- ─── JS Entry ─── -->
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>

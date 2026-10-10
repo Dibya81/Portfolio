@@ -1,0 +1,91 @@
+[
+  {
+    "id": 1,
+    "featured": true,
+    "title": "Consensus Bedrock Engine",
+    "subtitle": "AWS Bedrock / Lambda / DynamoDB / React",
+    "description": "Architected a production multi-agent LLM consensus system on AWS: two worker models (Llama 4 Scout 17B, Ministral 8B) scored across a custom 7-metric engine before a frontier Judge (Amazon Nova Pro) is invoked only on conflict. Engineered adaptive throttling, cross-region inference failover, and DynamoDB MD5 semantic cache — achieving <50 ms cached latency and <$0.000006 average cost per query.",
+    "flow": null,
+    "models": ["Llama 4 Scout 17B", "Ministral 8B", "Amazon Nova Pro"],
+    "features": [
+      "7-metric consensus engine (confidence, hallucination defense, specificity, readability)",
+      "Adaptive throttling and cross-region inference failover",
+      "DynamoDB MD5 semantic cache",
+      "End-to-end AWS CDK with Amplify CI/CD deployment"
+    ],
+    "tech": {
+      "Frontend": ["React"],
+      "Backend": ["Lambda", "DynamoDB"],
+      "Cloud": ["AWS Bedrock", "AWS CDK", "Amplify"]
+    },
+    "github": "https://github.com/Dibya81",
+    "demo": null
+  },
+  {
+    "id": 2,
+    "featured": true,
+    "title": "NeighborHealth AI",
+    "subtitle": "FastAPI / XGBoost / Supabase / Leaflet.js",
+    "description": "Built a hyperlocal disease outbreak prediction platform covering 198 BBMP wards x 12 diseases; XGBoost model trained on Karnataka Parliamentary health records achieved ROC-AUC 0.96. Engineered a 9-feature vector with automated daily GitHub Actions refresh pipeline generating 2,376 risk scores/day.",
+    "flow": null,
+    "models": ["XGBoost", "OpenRouter/Gemini AI"],
+    "features": [
+      "Hyperlocal disease outbreak prediction platform",
+      "Twilio SMS + Gmail threshold alerts",
+      "Multimodal health checker (skin image triage)",
+      "Automated daily GitHub Actions refresh pipeline"
+    ],
+    "tech": {
+      "Frontend": ["Leaflet.js"],
+      "Backend": ["FastAPI", "Supabase"],
+      "ML/AI": ["XGBoost", "Gemini AI"]
+    },
+    "github": "https://github.com/Dibya81",
+    "demo": "https://neighborhealth-ai.vercel.app"
+  },
+  {
+    "id": 3,
+    "featured": true,
+    "title": "Phantom (TRI-ZEROTRO)",
+    "subtitle": "LangGraph / Solana / FastAPI / IPFS / pgvector",
+    "description": "Co-built a 3-platform autonomous trust ecosystem: PHANTOMID, TRUSTFLOW, and WITNESSCHAIN. Designed LangGraph AI agents that cross-reference 15B+ leaked credentials via HIBP, NVD CVE, and CERT-In feeds — anchoring every threat event immutably on Solana via Anchor smart contracts.",
+    "flow": null,
+    "models": ["LangGraph AI agents"],
+    "features": [
+      "PHANTOMID (AI identity defense)",
+      "TRUSTFLOW (blockchain escrow + AI work verification)",
+      "WITNESSCHAIN (deepfake-resistant civic evidence network)",
+      "pgvector semantic search, IPFS decentralized storage, and TensorFlow.js on-device deepfake detection"
+    ],
+    "tech": {
+      "Backend": ["LangGraph", "FastAPI", "pgvector"],
+      "Blockchain": ["Solana", "IPFS", "Anchor"],
+      "ML/AI": ["TensorFlow.js"]
+    },
+    "github": "https://github.com/Dibya81",
+    "demo": "https://phantom-sigma-rust.vercel.app"
+  },
+  {
+    "id": 4,
+    "featured": true,
+    "title": "Aptos Synapse",
+    "subtitle": "Aptos Blockchain / Node.js / Ollama / LLM Agents",
+    "description": "Designed a decentralized AI Agent Delegation Protocol on Aptos — six specialized local LLMs (LLaMA, Mistral, Qwen) operate as independently verifiable agents, each performing work, getting evaluated, and earning rewards autonomously. Architected the full agent orchestration layer, Aptos smart contract payment release logic, and high-performance frontend.",
+    "flow": null,
+    "models": ["LLaMA", "Mistral", "Qwen"],
+    "features": [
+      "Decentralized AI Agent Delegation Protocol",
+      "Six specialized local LLMs working autonomously",
+      "Agent orchestration layer",
+      "Aptos smart contract payment release logic"
+    ],
+    "tech": {
+      "Frontend": ["React"],
+      "Backend": ["Node.js"],
+      "Blockchain": ["Aptos Blockchain"],
+      "ML/AI": ["Ollama", "LLM Agents"]
+    },
+    "github": "https://github.com/Dibya81",
+    "demo": null
+  }
+]

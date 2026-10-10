@@ -1,0 +1,80 @@
+/* ─── CSS Variables & Base Reset ─── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --bg-primary:   #0f0f0f;
+  --bg-secondary: #161616;
+  --bg-card:      rgba(255, 255, 255, 0.04);
+  --border:       rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(200, 255, 0, 0.25);
+  --accent:       #c8ff00;
+  --accent-dim:   rgba(200, 255, 0, 0.7);
+  --accent-faint: rgba(200, 255, 0, 0.08);
+  --fg:           #f0f0f0;
+  --fg-muted:     rgba(240, 240, 240, 0.45);
+  --fg-faint:     rgba(240, 240, 240, 0.2);
+  --sidebar-w:    260px;
+  --radius:       16px;
+  --radius-sm:    10px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  background: var(--bg-primary);
+  color: var(--fg);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+::selection { background: var(--accent); color: #0f0f0f; }
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(200,255,0,0.35); }
+
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+ul { list-style: none; }
+
+/* ─── Typography ─── */
+h1 { font-size: clamp(2.2rem, 5vw, 4rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; }
+h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 700; letter-spacing: -0.025em; }
+h3 { font-size: 1.1rem; font-weight: 600; letter-spacing: -0.01em; }
+p  { font-size: 0.925rem; line-height: 1.75; color: var(--fg-muted); }
+
+/* ─── Utility classes ─── */
+.accent   { color: var(--accent); }
+.muted    { color: var(--fg-muted); }
+.label-tag {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--accent-dim);
+  margin-bottom: 12px;
+  display: block;
+}
+.section-title {
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  background: linear-gradient(135deg, var(--fg) 0%, rgba(255,255,255,0.35) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.pulse-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  animation: pulse-anim 2s ease-in-out infinite;
+  display: inline-block;
+}
+@keyframes pulse-anim { 0%,100%{opacity:1}50%{opacity:0.3} }
