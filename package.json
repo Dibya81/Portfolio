@@ -2,6 +2,9 @@
   "name": "dibee-universe",
   "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": "22.x"
+  },
   "description": "Dibya Bhusal \u2014 cinematic hybrid 3D developer portfolio",
   "scripts": {
     "dev": "next dev",
