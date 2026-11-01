@@ -1,0 +1,124 @@
+{
+  "_note": "Single source for the resume: rendered by src/app/resume/page.tsx and by scripts/build-resume.mjs (PDF). Every claim traces to a repository commit, README or report.",
+  "name": "Dibya Bhusal",
+  "title": "Founder & Technical Lead · Full-Stack, Backend & IoT Engineer",
+  "contact": [
+    {
+      "label": "dibyabhusal81@gmail.com",
+      "href": "mailto:dibyabhusal81@gmail.com"
+    },
+    {
+      "label": "+91 90355 04514",
+      "href": "tel:+919035504514"
+    },
+    {
+      "label": "Bengaluru, India"
+    },
+    {
+      "label": "github.com/Dibya81",
+      "href": "https://github.com/Dibya81"
+    },
+    {
+      "label": "linkedin.com/in/dibya-bhusal-72401b215",
+      "href": "https://www.linkedin.com/in/dibya-bhusal-72401b215"
+    }
+  ],
+  "summary": "Technical lead at MIMO, where I run the Raspberry Pi print kiosks, payments and Firebase backend that students use daily. Strongest in TypeScript/Node.js, Python, Firebase and React.",
+  "education": [
+    {
+      "school": "REVA University",
+      "degree": "B.Tech, Computer Science & Engineering (IoT, Cybersecurity & Blockchain)",
+      "period": "Aug 2024 – May 2028",
+      "location": "Bengaluru, India",
+      "detail": "Coursework: Data Structures & Algorithms, Software Engineering, Cybersecurity, IoT, Blockchain, Artificial Intelligence"
+    }
+  ],
+  "experience": [
+    {
+      "org": "MIMO (Vision Printt Technologies)",
+      "role": "Technical Lead",
+      "period": "Sep 2026 – Present",
+      "location": "Bengaluru",
+      "context": "Campus print kiosks (Raspberry Pi + CUPS, Firebase, UPI), 2 in production; joined as IoT Hardware Intern.",
+      "links": [
+        {
+          "label": "printmimo.tech",
+          "href": "https://printmimo.tech"
+        }
+      ],
+      "bullets": [
+        "Lead engineering on a 10-contributor production codebase (444 of my commits): set up CI/CD deploy gates, secret scanning, coverage checks, CODEOWNERS and the contributing guide; 534 backend tests.",
+        "Traced production kiosk lag to an unbounded download pipeline (125 concurrent threads, swap 900/990 MiB on a 1 GB Raspberry Pi) and replaced it with a bounded worker pool, stale-job filtering and cache eviction, covered by 15 new regression tests.",
+        "Fixed a race that showed customers another customer's file by allocating print codes in atomic Firestore transactions and serialising print dispatch on the Pi to one job at a time.",
+        "Stopped false refunds from slow CUPS responses (lpstat timeout + retry, real failure reasons logged) and raised API capacity from 10 to 50 instances for a ~7,000 requests/hour lunch peak.",
+        "Made refunds exactly-once across 3 entry points with a shared atomic claim, and made the Cashfree payment webhook signature-verified and idempotent.",
+        "Resolved production incidents (403 upload failures, 12 lost secrets, broken Office conversion), closed an auth bypass, locked down public Firestore/Storage rules and fixed 13 audit findings."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "Project 117 — On-Premise Multi-Agent Industrial AI",
+      "stack": "Python, FastAPI, Ollama, LanceDB, Next.js, Kotlin",
+      "period": "2026",
+      "links": [
+        {
+          "label": "Live",
+          "href": "https://project-117-web.vercel.app"
+        },
+        {
+          "label": "GitHub",
+          "href": "https://github.com/Dibya81/project-117"
+        }
+      ],
+      "bullets": [
+        "Built solo a refinery digital twin (58 equipment, 224 sensors) where 3 local LLM agents diagnose a fault, plan a reroute and verify safety through 19 permission-gated tools; nothing executes unless the validator and safety agent both agree.",
+        "Kept plant data on-premise with clearance-filtered retrieval (5 levels), default-deny egress and a hash-linked, Ed25519-signed audit trail; shipped a Next.js console and an offline Android field app."
+      ]
+    },
+    {
+      "name": "NeighborHealth — Dengue Forecasting for Bengaluru",
+      "stack": "Python, OCR, FastAPI, Next.js, GitHub Actions",
+      "period": "2025–26",
+      "links": [
+        {
+          "label": "Live",
+          "href": "https://neighborhealth-ai.vercel.app"
+        },
+        {
+          "label": "GitHub",
+          "href": "https://github.com/Dibya81/neighborhealth-ai"
+        }
+      ],
+      "bullets": [
+        "Turned 606 government PDF bulletins into a weekly case series (374/379 reconcile exactly) and forecast with 6 models, rolling backtests and conformal intervals; the 1-week ensemble beats seasonal-naive by 13.6% (MAE 208 vs 241)."
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "group": "Languages",
+      "items": "Python, TypeScript, JavaScript, Java, SQL, C/C++, Kotlin, Move"
+    },
+    {
+      "group": "Backend & Cloud",
+      "items": "Node.js/Express, FastAPI, Firebase (Firestore, Cloud Functions, Auth), Cloud Run, PostgreSQL, Redis, Docker, GitHub Actions"
+    },
+    {
+      "group": "Frontend",
+      "items": "React, Next.js, Vite, Tailwind CSS, Three.js / React Three Fiber"
+    },
+    {
+      "group": "AI / ML",
+      "items": "Ollama (local LLMs), multi-agent systems, LangGraph, RAG (LanceDB, BM25, pgvector), scikit-learn, forecasting"
+    },
+    {
+      "group": "Systems & Security",
+      "items": "Linux, Raspberry Pi, CUPS, SSH, ESP32, MQTT, RBAC, Firestore rules, webhook verification"
+    }
+  ],
+  "achievements": [
+    "Hackathons: 1st place and Solana track winner, TRI-ZEROTRO (Solana/Anchor anchoring pipeline, team of 3); 4th place, Namma Security 2.0 national hackathon, KAVACH (automated CCTV, fraud-scoring and FIR pipeline).",
+    "State-level athlete: cricket, representing the state team in U16 & U19 national tournaments; table tennis, state senior team."
+  ]
+}

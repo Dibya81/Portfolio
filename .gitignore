@@ -5,26 +5,36 @@ Thumbs.db
 # Node dependencies
 node_modules/
 **/node_modules/
-spider-porfolio-main/node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Vite cache & temp
-.vite/
-dist-ssr/
-*.local
+# Next.js
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+.vercel
 
 # Environment & IDE
 .env
 .env.*
+!.env.example
 .idea/
 .vscode/
 *.swp
 *.swo
 
-# Older archive & dev bundles
-Portfolio-main/
-spider-porfolio-main/*.tgz
-spider-porfolio-main/eslint.config.js
-spider-porfolio-main/src/
+# Legacy archive (kept for reference; same exclusions as before the move)
+legacy/Portfolio-main/
+legacy/spider-porfolio-main/*.tgz
+legacy/spider-porfolio-main/eslint.config.js
+legacy/spider-porfolio-main/src/
+legacy/spider-porfolio-main/.vite/
+legacy/spider-porfolio-main/dist-ssr/
+
+# Resume build (Chrome profile used for PDF printing)
+resume/.chrome/
+
+# Unlaunched work kept locally (e.g. Qrave screenshots) — never deployed
+private/

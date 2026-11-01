@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>LinkedIn Banner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=block" rel="stylesheet">
+<style>
+  :root {
+    --void: #05070d;
+    --ink: #0b1020;
+    --fg: #e8ecf4;
+    --muted: #9aa4b8;
+    --faint: #7e88a4;
+    --line: rgb(148 163 184 / 0.10);
+    --ember: #ff7a3d;
+    --tide: #5b8cff;
+    --signal: #7ee0c3;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1584px; height: 396px; overflow: hidden; background: var(--void); }
+  .banner {
+    position: relative; width: 1584px; height: 396px; overflow: hidden;
+    background:
+      radial-gradient(700px 380px at 92% 10%, rgb(91 140 255 / 0.16), transparent 70%),
+      radial-gradient(520px 300px at 58% 110%, rgb(255 122 61 / 0.12), transparent 70%),
+      linear-gradient(180deg, var(--ink), var(--void));
+    font-family: "Inter Tight", system-ui, sans-serif;
+    color: var(--fg);
+  }
+  .grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: linear-gradient(90deg, rgb(0 0 0 / 0.9) 0%, rgb(0 0 0 / 0.35) 45%, rgb(0 0 0 / 0.15) 100%);
+  }
+  svg.traces { position: absolute; left: 0; top: 0; }
+
+  .content {
+    position: absolute; right: 96px; top: 50%; transform: translateY(-50%);
+    width: 820px; text-align: right;
+  }
+  .kicker {
+    font-family: "JetBrains Mono", monospace; font-size: 15px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--signal);
+    display: inline-flex; align-items: center; gap: 12px;
+  }
+  .kicker .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--signal); box-shadow: 0 0 14px var(--signal); }
+  h1 {
+    font-family: "Instrument Serif", Georgia, serif; font-weight: 400;
+    font-size: 92px; line-height: 0.95; letter-spacing: -0.01em; margin-top: 14px;
+  }
+  .tagline { font-size: 28px; font-weight: 500; color: var(--fg); margin-top: 14px; letter-spacing: -0.005em; }
+  .tagline em { font-family: "Instrument Serif", Georgia, serif; font-style: italic; font-weight: 400; font-size: 32px; color: var(--ember); }
+  .chips { margin-top: 22px; display: flex; justify-content: flex-end; gap: 10px; }
+  .chip {
+    font-size: 16px; font-weight: 500; color: var(--fg);
+    padding: 8px 16px; border-radius: 999px;
+    border: 1px solid rgb(148 163 184 / 0.28); background: rgb(11 16 32 / 0.6);
+  }
+  .meta { margin-top: 20px; font-family: "JetBrains Mono", monospace; font-size: 15px; color: var(--muted); letter-spacing: 0.04em; }
+  .meta b { color: var(--fg); font-weight: 500; }
+  .meta .sep { color: var(--faint); margin: 0 12px; }
+</style>
+</head>
+<body>
+<div class="banner">
+  <div class="grid"></div>
+
+  <svg class="traces" width="640" height="396" viewBox="0 0 640 396" fill="none">
+    <defs>
+      <linearGradient id="fade" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#7ee0c3" stop-opacity="0.75"/>
+        <stop offset="1" stop-color="#7ee0c3" stop-opacity="0"/>
+      </linearGradient>
+      <linearGradient id="fadeT" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#5b8cff" stop-opacity="0.6"/>
+        <stop offset="1" stop-color="#5b8cff" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <g stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M0 52 H120 L150 82 H330 L360 52 H600" stroke="url(#fade)"/>
+      <path d="M0 96 H80 L110 126 H260 L290 156 H520" stroke="url(#fadeT)"/>
+      <path d="M40 0 V30 L70 60 V120" stroke="url(#fade)"/>
+      <path d="M210 0 V40 L240 70 H420 L450 40 H620" stroke="url(#fadeT)"/>
+      <path d="M0 176 H60 L90 146 H180" stroke="url(#fade)"/>
+    </g>
+    <g fill="#7ee0c3">
+      <circle cx="150" cy="82" r="3.5"/>
+      <circle cx="330" cy="82" r="3.5" fill-opacity="0.6"/>
+      <circle cx="70" cy="120" r="3.5"/>
+      <circle cx="180" cy="146" r="3.5" fill-opacity="0.8"/>
+    </g>
+    <g fill="#5b8cff">
+      <circle cx="110" cy="126" r="3.5"/>
+      <circle cx="290" cy="156" r="3.5" fill-opacity="0.6"/>
+      <circle cx="240" cy="70" r="3.5" fill-opacity="0.8"/>
+    </g>
+    <g transform="translate(420 106)">
+      <rect x="0" y="0" width="64" height="64" rx="8" stroke="#9aa4b8" stroke-opacity="0.35" stroke-width="1.5" fill="#0b1020"/>
+      <rect x="18" y="18" width="28" height="28" rx="4" stroke="#ff7a3d" stroke-opacity="0.8" stroke-width="1.5"/>
+      <g stroke="#9aa4b8" stroke-opacity="0.35" stroke-width="1.5">
+        <path d="M14 0 V-10 M32 0 V-10 M50 0 V-10"/>
+        <path d="M14 64 V74 M32 64 V74 M50 64 V74"/>
+        <path d="M0 14 H-10 M0 32 H-10 M0 50 H-10"/>
+        <path d="M64 14 H74 M64 32 H74 M64 50 H74"/>
+      </g>
+    </g>
+  </svg>
+
+  <div class="content">
+    <div class="kicker"><span class="dot"></span>Technical Lead · MIMO</div>
+    <h1>Dibya Bhusal</h1>
+    <p class="tagline">I build production software <em>on real hardware.</em></p>
+    <div class="chips">
+      <span class="chip">Full-Stack</span>
+      <span class="chip">Backend</span>
+      <span class="chip">IoT · Raspberry Pi</span>
+      <span class="chip">Multi-agent AI</span>
+    </div>
+    <p class="meta"><b>Bengaluru, India</b><span class="sep">/</span>github.com/Dibya81</p>
+  </div>
+</div>
+</body>
+</html>
