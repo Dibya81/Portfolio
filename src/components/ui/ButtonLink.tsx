@@ -13,8 +13,8 @@ interface ButtonLinkProps {
 
 const styles = {
   primary:
-    "bg-ember text-void hover:bg-ember-soft border border-ember hover:border-ember-soft font-semibold",
-  ghost: "border border-line-strong text-fg hover:border-fg/60 hover:bg-white/[0.04]",
+    "bg-ember text-on-accent hover:bg-ember-soft border border-ember hover:border-ember-soft font-semibold",
+  ghost: "border border-line-strong text-fg hover:border-fg/60 hover:bg-fg/[0.05]",
   text: "text-ember-soft hover:text-fg underline-offset-4 hover:underline px-0",
 };
 

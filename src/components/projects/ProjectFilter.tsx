@@ -20,7 +20,7 @@ export function ProjectFilter({ projects }: { projects: Project[] }) {
             aria-pressed={area === a}
             onClick={() => setArea(a)}
             className={`min-h-11 rounded-full border px-4 font-mono text-xs tracking-wide transition-colors ${
-              area === a ? "border-ember bg-ember text-void" : "border-line text-fg-muted hover:border-line-strong hover:text-fg"
+              area === a ? "border-ember bg-ember text-on-accent" : "border-line text-fg-muted hover:border-line-strong hover:text-fg"
             }`}
           >
             {a}

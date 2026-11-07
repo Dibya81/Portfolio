@@ -1,24 +1,39 @@
 @import "tailwindcss" source(none);
 @source "../";
 
-/* ───────── Design tokens ───────── */
+/* ───────── Design tokens (dark is the default; light overrides below) ───────── */
 @theme {
-  --color-void: #05070d;
-  --color-ink: #0b1020;
-  --color-ink-2: #121a30;
-  --color-line: rgb(148 163 184 / 0.14);
-  --color-line-strong: rgb(148 163 184 / 0.28);
-  --color-fg: #e8ecf4;
-  --color-fg-muted: #9aa4b8;
-  --color-fg-faint: #7e88a4; /* ≥ 4.5:1 on void, ink and ink-2 */
-  --color-ember: #ff7a3d;
-  --color-ember-soft: #ffb38a;
+  --color-void: #0b0b0c;
+  --color-ink: #141416;
+  --color-ink-2: #1d1d20;
+  --color-line: rgb(255 255 255 / 0.09);
+  --color-line-strong: rgb(255 255 255 / 0.2);
+  --color-fg: #eeeeea;
+  --color-fg-muted: #a6a6a1;
+  --color-fg-faint: #8b8b86; /* ≥ 4.5:1 on void and ink */
+  --color-ember: #ff6a2b;
+  --color-ember-soft: #ff9b6a;
+  --color-on-accent: #120a05; /* text on ember fills, both themes */
   --color-tide: #5b8cff;
   --color-signal: #7ee0c3;
   --color-violet: #c38bff;
 
   --breakpoint-xs: 30rem;
   --ease-cinema: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Light theme: same tokens, so every utility (bg-void, text-fg, border-line…) follows. */
+:root[data-theme="light"] {
+  --color-void: #f2f1ed;
+  --color-ink: #ffffff;
+  --color-ink-2: #e9e7e2;
+  --color-line: rgb(20 20 18 / 0.1);
+  --color-line-strong: rgb(20 20 18 / 0.22);
+  --color-fg: #151513;
+  --color-fg-muted: #56564f;
+  --color-fg-faint: #6a6a63; /* ≥ 4.5:1 on void */
+  --color-ember: #f05a1a;
+  --color-ember-soft: #b8400c; /* used as accent TEXT: darker for contrast on light */
 }
 
 @theme inline {
@@ -38,6 +53,9 @@
     -webkit-font-smoothing: antialiased;
     scroll-padding-top: 5rem;
   }
+  :root[data-theme="light"] {
+    color-scheme: light;
+  }
   @media (prefers-reduced-motion: no-preference) {
     html {
       scroll-behavior: smooth;
@@ -51,8 +69,8 @@
     overflow-x: hidden;
   }
   ::selection {
-    background: rgb(255 122 61 / 0.35);
-    color: #fff;
+    background: rgb(255 106 43 / 0.35);
+    color: var(--color-fg);
   }
   :focus-visible {
     outline: 2px solid var(--color-ember);
@@ -63,6 +81,20 @@
     max-width: 100%;
     height: auto;
   }
+}
+
+/* Film grain: one fixed, non-interactive layer (never on scrolling containers). */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+:root[data-theme="light"] body::after {
+  opacity: 0.05;
 }
 
 /* ───────── Utilities ───────── */
@@ -82,7 +114,7 @@
 }
 
 @utility panel {
-  background: rgb(11 16 32 / 0.86);
+  background: color-mix(in oklab, var(--color-ink) 88%, transparent);
   border: 1px solid var(--color-line);
   border-radius: 1rem;
 }
@@ -99,7 +131,7 @@
   padding: 0.6rem 1rem;
   border-radius: 0.5rem;
   background: var(--color-ember);
-  color: var(--color-void);
+  color: var(--color-on-accent);
   font-weight: 600;
   transition: top 0.2s;
 }
@@ -107,40 +139,432 @@
   top: 1rem;
 }
 
-/* ───────── Gateway: preserved scroll effect ───────── */
+/* ───────── Theme switch: circular wipe from the rope (View Transitions) ───────── */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* ───────── Blueprint reveal ─────────
+ * Every [data-reveal] element is "built" when it scrolls in:
+ *  1. a thin blueprint outline draws around it (corner handles + size tag),
+ *  2. a cover the colour of the page slides away, revealing the real content
+ *     (headings type in with steps; media resolves from a crosshair placeholder),
+ *  3. the outline fades out. Only once JS runs, so no-JS shows everything. */
+:root {
+  --bp: #4cc3ff;
+}
+:root[data-theme="light"] {
+  --bp: #1f6fd6;
+}
+.js [data-reveal] {
+  position: relative;
+}
+.js [data-reveal]::before,
+.js [data-reveal]::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+/* The cover hiding the content until it is "rendered". */
+.js [data-reveal]::before {
+  inset: -2px;
+  z-index: 4;
+  background: var(--color-void);
+  transform-origin: 100% 50%;
+}
+/* The blueprint outline: 1px border, square handles on each corner, size tag. */
+.js [data-reveal]::after {
+  content: attr(data-size);
+  inset: -7px;
+  z-index: 5;
+  padding: 3px 6px;
+  border: 1px solid var(--bp);
+  font: 500 9px/1 var(--font-mono);
+  letter-spacing: 0.08em;
+  color: var(--bp);
+  --h: linear-gradient(var(--bp), var(--bp));
+  background:
+    var(--h) 0 0 / 5px 5px no-repeat,
+    var(--h) 100% 0 / 5px 5px no-repeat,
+    var(--h) 0 100% / 5px 5px no-repeat,
+    var(--h) 100% 100% / 5px 5px no-repeat;
+  clip-path: inset(0 100% 100% 0);
+}
+.js [data-reveal].is-in::after {
+  animation: bp-draw 1.5s var(--ease-cinema) calc(var(--d, 0) * 110ms) forwards;
+}
+.js [data-reveal].is-in::before {
+  animation: bp-wipe 0.75s cubic-bezier(0.7, 0, 0.2, 1) calc(var(--d, 0) * 110ms + 380ms) forwards;
+}
+/* Headings: the cover retreats in steps so the text looks typed. */
+.js [data-reveal="type"].is-in::before {
+  animation-timing-function: steps(16, end);
+  animation-duration: 0.9s;
+}
+/* Media: grey placeholder with a crosshair, then the image fades through. */
+.js [data-reveal="media"]::before {
+  background:
+    linear-gradient(var(--bp), var(--bp)) 50% 50% / 18px 1px no-repeat,
+    linear-gradient(var(--bp), var(--bp)) 50% 50% / 1px 18px no-repeat,
+    color-mix(in oklab, var(--color-fg) 9%, var(--color-void));
+  border-radius: inherit;
+}
+.js [data-reveal="media"].is-in::before {
+  animation: bp-fade 0.9s ease calc(var(--d, 0) * 110ms + 520ms) forwards;
+}
+@keyframes bp-draw {
+  0% {
+    clip-path: inset(0 100% 100% 0);
+    opacity: 1;
+  }
+  28% {
+    clip-path: inset(0 0 0 0);
+  }
+  72% {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+    opacity: 0;
+  }
+}
+@keyframes bp-wipe {
+  to {
+    transform: scaleX(0);
+  }
+}
+@keyframes bp-fade {
+  to {
+    opacity: 0;
+  }
+}
+
+/* ───────── Hero ───────── */
 .gateway {
   position: relative;
-  height: 400svh;
+  height: 230svh; /* the pin distance drives the portrait's head-turn */
 }
 .gateway-sticky {
   position: sticky;
   top: 0;
-  height: 100svh;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
   overflow: hidden;
-  transform-origin: 50% 45%;
-  will-change: transform, opacity;
-  background: var(--color-void);
 }
-.gateway-vignette {
+/* Warm light behind the portrait; theme-aware, no imagery. */
+.gateway-glow {
   position: absolute;
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(ellipse at 50% 45%, transparent 35%, rgb(5 7 13 / 0.55) 75%, rgb(5 7 13 / 0.92) 100%),
-    linear-gradient(to bottom, rgb(5 7 13 / 0.5), transparent 22%, transparent 70%, rgb(5 7 13 / 0.85));
+    radial-gradient(40rem 30rem at 78% 55%, color-mix(in oklab, var(--color-ember) 16%, transparent), transparent 70%),
+    radial-gradient(30rem 24rem at 12% 20%, color-mix(in oklab, var(--color-tide) 7%, transparent), transparent 70%);
 }
-.hero-block {
-  position: absolute;
+@media (max-width: 1023px) {
+  .gateway {
+    height: auto;
+  }
+  .gateway-sticky {
+    position: relative;
+    padding-block: 5.5rem 3.5rem;
+  }
+}
+
+/* Name: letters rise in on load. */
+.js .rise > span {
+  display: inline-block;
   opacity: 0;
-  transform: translateY(24px);
-  transition:
-    opacity 0.7s var(--ease-cinema),
-    transform 0.7s var(--ease-cinema);
-  pointer-events: none;
+  transform: translateY(0.6em) rotate(6deg);
+  animation: rise 0.9s var(--ease-cinema) forwards;
+  animation-delay: calc(var(--i) * 45ms + 120ms);
 }
-.hero-block[data-visible="true"] {
-  opacity: 1;
-  pointer-events: auto;
+@keyframes rise {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Role rotator: words slide up through a pill. */
+.rotator {
+  display: inline-grid;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+.rotator > span {
+  grid-area: 1 / 1;
+  transition:
+    transform 0.6s var(--ease-cinema),
+    opacity 0.6s var(--ease-cinema);
+}
+.rotator > span[data-state="next"] {
+  transform: translateY(110%);
+  opacity: 0;
+}
+.rotator > span[data-state="prev"] {
+  transform: translateY(-110%);
+  opacity: 0;
+}
+
+/* Portrait: black & white until hovered; colour spreads from the cursor. */
+@property --spot {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+.portrait {
+  --spot: 0px;
+  transition: --spot 0.7s var(--ease-cinema);
+}
+.portrait[data-hover="true"] {
+  --spot: 190px;
+}
+/* Touch: --spot follows scroll every frame, so ease only briefly. */
+.portrait[data-touch="true"] {
+  transition-duration: 0.18s;
+}
+.portrait[data-color="true"] {
+  --spot: 1600px;
+  transition-duration: 1.4s;
+}
+.portrait-bw {
+  position: absolute;
+  inset: 0;
+  -webkit-backdrop-filter: grayscale(1) contrast(1.06);
+  backdrop-filter: grayscale(1) contrast(1.06);
+  --m: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), transparent calc(var(--spot) * 0.72), #000 var(--spot));
+  -webkit-mask-image: var(--m);
+  mask-image: var(--m);
+}
+
+/* ───────── Theme rope ───────── */
+.rope {
+  position: fixed;
+  top: 0;
+  right: clamp(0.75rem, 2.2vw, 1.5rem);
+  z-index: 55;
+  width: 44px;
+  transform-origin: 50% 0;
+  touch-action: none;
+}
+.rope-cord {
+  margin-inline: auto;
+  width: 2px;
+  height: calc(var(--len, 92px) + var(--pull, 0px));
+  background: linear-gradient(to bottom, var(--color-line-strong), var(--color-fg-muted));
+}
+/* The button is a 44×44 touch target; the visible pill is drawn by ::before. */
+.rope-handle {
+  position: relative;
+  display: block;
+  margin: -8px auto 0;
+  width: 44px;
+  height: 46px;
+  cursor: grab;
+  -webkit-tap-highlight-color: transparent;
+}
+.rope-handle::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 6px;
+  width: 16px;
+  height: 30px;
+  translate: -50% 0;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--color-ember-soft), var(--color-ember));
+  box-shadow:
+    0 6px 18px color-mix(in oklab, var(--color-ember) 45%, transparent),
+    inset 0 -3px 0 rgb(0 0 0 / 0.18);
+}
+.rope-handle:active {
+  cursor: grabbing;
+}
+@media (max-width: 767px) {
+  /* Phones: hang it inside the header, just left of the Menu button, so it never covers content. */
+  .rope {
+    --len: 18px;
+    right: 7.25rem;
+  }
+  .rope-handle::before {
+    width: 14px;
+    height: 26px;
+  }
+}
+
+/* ───────── Doors (projects) ───────── */
+.door {
+  display: block;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.door-frame {
+  position: relative;
+  display: block;
+  aspect-ratio: 3 / 5;
+  perspective: 1400px;
+  border-radius: 50% 50% 0.5rem 0.5rem / 26% 26% 0.5rem 0.5rem;
+  background: #0d0c0b;
+  box-shadow:
+    inset 0 0 0 6px color-mix(in oklab, var(--color-fg) 10%, transparent),
+    0 30px 60px -30px rgb(0 0 0 / 0.6);
+}
+/* What's behind the door: warm light + a dim look at the project. */
+.door-inside {
+  position: absolute;
+  inset: 6px;
+  overflow: hidden;
+  border-radius: inherit;
+  background:
+    radial-gradient(60% 45% at 50% 75%, color-mix(in oklab, var(--accent) 55%, #ffb36b) 0%, transparent 70%),
+    linear-gradient(#0d0c0b, #1a1410);
+}
+.door-inside img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.32;
+  mix-blend-mode: screen;
+}
+.door-leaf {
+  position: absolute;
+  inset: 6px;
+  border-radius: inherit;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  transition: transform 0.8s var(--ease-cinema);
+  background:
+    linear-gradient(90deg, rgb(0 0 0 / 0.22), transparent 18%, transparent 82%, rgb(0 0 0 / 0.28)),
+    linear-gradient(180deg, color-mix(in oklab, var(--accent) 92%, #fff), color-mix(in oklab, var(--accent) 78%, #000));
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.12);
+}
+.door-panel {
+  position: absolute;
+  left: 16%;
+  right: 16%;
+  border-radius: 999px 999px 0.4rem 0.4rem;
+  box-shadow:
+    inset 0 2px 0 rgb(255 255 255 / 0.18),
+    inset 0 -2px 6px rgb(0 0 0 / 0.25);
+}
+.door-panel:nth-child(1) {
+  top: 9%;
+  height: 34%;
+}
+.door-panel:nth-child(2) {
+  top: 56%;
+  height: 34%;
+  border-radius: 0.4rem;
+}
+.door-plate {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  transform: translate(-50%, -50%);
+  min-width: 58%;
+  padding: 0.35rem 0.6rem;
+  border-radius: 0.3rem;
+  background: #f6d46b;
+  color: #24190a;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-transform: uppercase;
+  box-shadow: 0 2px 0 rgb(0 0 0 / 0.25);
+}
+.door-knob {
+  position: absolute;
+  right: 11%;
+  top: 52%;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fff4c9, #c99a2e 60%, #6b4a10);
+  box-shadow: 0 2px 4px rgb(0 0 0 / 0.4);
+}
+@media (hover: hover) {
+  .door:hover .door-leaf {
+    transform: rotateY(-32deg);
+  }
+}
+.door:focus-visible .door-leaf {
+  transform: rotateY(-32deg);
+}
+.door[data-open="true"] .door-leaf {
+  transform: rotateY(-108deg);
+  transition-duration: 0.9s;
+}
+/* Phones: the door in the middle of the swipe strip cracks open on its own. */
+@media (max-width: 767px) {
+  .door[data-active="true"]:not([data-open="true"]) .door-leaf {
+    transform: rotateY(-32deg);
+  }
+  .door-plate {
+    font-size: 0.7rem;
+  }
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Walking through: the whole row zooms toward the opened door. */
+.door-row {
+  transition:
+    transform 0.9s cubic-bezier(0.7, 0, 0.3, 1),
+    opacity 0.9s ease;
+}
+.door-row[data-zoom="true"] {
+  transform: scale(2.4);
+  opacity: 0;
+}
+
+dialog.door-dialog {
+  margin: 0;
+  width: 100%;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  padding: 0;
+  border: 0;
+  background: var(--color-void);
+  color: var(--color-fg);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+dialog.door-dialog::backdrop {
+  background: transparent;
+}
+dialog.door-dialog[open] {
+  animation: door-in 0.75s var(--ease-cinema);
+}
+@keyframes door-in {
+  from {
+    clip-path: inset(var(--t, 40%) var(--r, 40%) var(--b, 20%) var(--l, 40%) round 40% 40% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0 round 0);
+  }
+}
+dialog.door-dialog[data-closing="true"] {
+  animation: door-out 0.35s ease forwards;
+}
+@keyframes door-out {
+  to {
+    opacity: 0;
+    transform: scale(0.98);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -149,20 +573,10 @@
   }
   .gateway-sticky {
     position: relative;
-    height: auto;
-    min-height: 100svh;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    gap: 3rem;
-    padding-block: 7rem 4rem;
   }
-  .hero-block {
-    position: relative;
-    inset: auto !important;
-    opacity: 1;
-    transform: none !important;
-    pointer-events: auto;
+  .js [data-reveal]::before,
+  .js [data-reveal]::after {
+    display: none;
   }
   *,
   *::before,
@@ -172,48 +586,22 @@
   }
 }
 
-/* ───────── Reveal slot (ported Spider-Man effect) ───────── */
-.reveal-slot {
-  position: relative;
-  aspect-ratio: 16 / 10;
-  border-radius: 0.875rem;
-  overflow: hidden;
-  border: 1px solid var(--color-line);
-  touch-action: pan-y;
-}
-.reveal-slot[data-mode="webgl"] {
-  background: transparent;
-  cursor: crosshair;
-}
-.reveal-fallback-mask {
-  clip-path: circle(0% at var(--rx, 50%) var(--ry, 50%));
-  transition: clip-path 0.5s var(--ease-cinema);
-}
-.reveal-slot[data-active="true"] .reveal-fallback-mask {
-  clip-path: circle(36% at var(--rx, 50%) var(--ry, 50%));
-}
-
-/* ───────── Backdrop (no-WebGL fallback) ───────── */
-.backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  transition: background 1.2s var(--ease-cinema);
-}
-
 /* ───────── Dialog ───────── */
 dialog.cert-dialog::backdrop {
-  background: rgb(5 7 13 / 0.88);
+  background: color-mix(in oklab, var(--color-void) 90%, transparent);
 }
 
 @media print {
-  .no-print {
+  .no-print,
+  .rope {
     display: none !important;
   }
   body {
     background: #fff;
     color: #000;
+  }
+  body::after {
+    display: none;
   }
 }
 
@@ -236,6 +624,23 @@ dialog.cert-dialog::backdrop {
   .cert-track { animation: none; }
   .cert-track > li { scroll-snap-align: start; }
   .cert-track > li[aria-hidden="true"] { display: none; }
+}
+
+/* Phones */
+@media (max-width: 767px) {
+  /* Blueprint reveal ~30% quicker so scrolling never waits on it. */
+  .js [data-reveal].is-in::after {
+    animation-duration: 1.05s;
+    animation-delay: calc(var(--d, 0) * 70ms);
+  }
+  .js [data-reveal].is-in::before {
+    animation-duration: 0.55s;
+    animation-delay: calc(var(--d, 0) * 70ms + 260ms);
+  }
+  .js [data-reveal="media"].is-in::before {
+    animation-duration: 0.65s;
+    animation-delay: calc(var(--d, 0) * 70ms + 360ms);
+  }
 }
 
 /* Long project list: skip layout/paint for off-screen cards (fast on phones). */

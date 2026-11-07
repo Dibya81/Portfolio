@@ -71,7 +71,7 @@ export function CertificateGallery({ items }: { items: readonly Certificate[] })
               <button
                 type="button"
                 onClick={close}
-                className="inline-flex size-11 items-center justify-center rounded-full text-fg-muted hover:bg-white/5 hover:text-fg"
+                className="inline-flex size-11 items-center justify-center rounded-full text-fg-muted hover:bg-fg/5 hover:text-fg"
                 aria-label="Close"
                 autoFocus
               >

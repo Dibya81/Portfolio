@@ -4,7 +4,7 @@ export const profile = {
   role: "Software engineer",
   focus: "Full-stack · Backend & IoT · AI agents",
   headline:
-    "I build systems that have to be trusted — local AI agents that explain their decisions, chains you can verify, and machines that fail safely.",
+    "I build systems that have to be trusted: local AI agents that explain their decisions, chains you can verify, and machines that fail safely.",
   location: "From Nepal · studying in Bengaluru, India",
   email: "dibyabhusal81@gmail.com",
   phone: "+91 9035504514",
@@ -16,9 +16,9 @@ export const profile = {
   },
   resumePdf: "/resume/Dibya_Bhusal_Resume.pdf",
   about: [
-    "I'm Dibya — a B.Tech Computer Science student at REVA University in Bengaluru, originally from Nepal, specialising in IoT, cybersecurity and blockchain.",
+    "I'm Dibya, a B.Tech Computer Science student at REVA University in Bengaluru, originally from Nepal, specialising in IoT, cybersecurity and blockchain.",
     "I'm drawn to problems where software meets the physical world and has to be trusted: a refinery that must reroute safely when a sensor dies, a kiosk that must never print the same job twice, a forecast that has to admit how uncertain it is.",
-    "My recent projects document their own limits — what was measured, what was simulated, what isn't done yet. I'd rather show an honest number than a flattering one.",
+    "My recent projects document their own limits: what was measured, what was simulated, what isn't done yet. I'd rather show an honest number than a flattering one.",
   ],
 } as const;
 
@@ -44,17 +44,19 @@ export const recognition = [
     title: "1st place · Solana track",
     detail: "Hackathon win for TRI-ZEROTRO (Phantom), built with a team of three.",
     project: "phantom",
+    short: "TRI-ZEROTRO, team of three",
   },
   {
     title: "4th place · Namma Security 2.0",
     detail: "National-level hackathon (Presidency University) for KAVACH, an automated detect → analyze → decide → act security pipeline.",
     project: "kavach",
+    short: "KAVACH, national-level",
   },
 ] as const;
 
 export const certificates = [
-  { src: "/certificates/google-cloud.webp", title: "Google Cloud — Prompt Design in Vertex AI", width: 1400, height: 1044 },
-  { src: "/certificates/code-crusade-2025.webp", title: "Code Crusade 2025 — Hackathon", width: 1024, height: 720 },
+  { src: "/certificates/google-cloud.webp", title: "Google Cloud: Prompt Design in Vertex AI", width: 1400, height: 1044 },
+  { src: "/certificates/code-crusade-2025.webp", title: "Code Crusade 2025 Hackathon", width: 1024, height: 720 },
   { src: "/certificates/hackathon.webp", title: "Hackathon participation", width: 1400, height: 981 },
   { src: "/certificates/data-fundamentals.webp", title: "Data Fundamentals", width: 1400, height: 1084 },
   { src: "/certificates/mathematics.webp", title: "Mathematics", width: 1400, height: 924 },
@@ -75,7 +77,7 @@ export const beyondCode = {
   },
   photography: {
     title: "Photography",
-    detail: "Mostly Nepal — hills, weather and old architecture.",
+    detail: "Mostly Nepal: hills, weather and old architecture.",
     photos: [
       { src: "/life/himalaya.webp", alt: "Snow-covered Himalayan peak above haze", width: 1100, height: 733 },
       { src: "/life/storm-sunset.webp", alt: "Storm clouds lit orange at sunset over a town", width: 1100, height: 825 },

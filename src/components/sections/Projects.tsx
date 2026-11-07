@@ -1,37 +1,43 @@
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { ButtonLink } from "@/components/ui/ButtonLink";
-import { ArrowRight } from "@/components/ui/Icons";
-import { ProjectShowcase } from "@/components/projects/ProjectShowcase";
+import { ProjectDoors, type DoorProject } from "@/components/projects/ProjectDoors";
 import { flagshipProjects } from "@/data/projects";
 
-/** 04 · Project Universe — the five flagships. */
+/** 05 · Projects: four flagships, one per domain, each behind a door. */
 export function Projects() {
+  const doors: DoorProject[] = flagshipProjects.map((p) => ({
+    slug: p.slug,
+    title: p.title,
+    category: p.category,
+    tagline: p.tagline,
+    year: p.year,
+    accent: p.accent,
+    problem: p.problem,
+    solution: p.solution,
+    technologies: p.technologies,
+    features: p.features,
+    results: p.results,
+    status: p.status,
+    githubUrl: p.githubUrl,
+    demoUrl: p.demoUrl,
+    screenshots: p.screenshots,
+    contribution: p.contribution,
+    team: p.team,
+  }));
+
   return (
-    <section id="projects" data-station aria-labelledby="projects-title" className="relative py-[16svh]">
+    <section id="projects" data-station aria-labelledby="projects-title" className="relative py-16 md:py-[16svh]">
       <div className="shell">
         <SectionHeading
-          index={3}
-          world="Project Universe"
+          world="Projects"
           id="projects-title"
           title={
             <>
-              Five systems, <em className="text-ember-soft">built to be trusted.</em>
+              Pick a door. <em className="text-ember-soft">Walk in.</em>
             </>
           }
-          lead="Industrial AI that verifies before it acts, a forecast that admits its limits, agents paid on-chain for verified work, and an identity-defense ecosystem. Each one opens into a full case study."
+          lead="Four flagships, one per domain. Open a door."
         />
-
-        <div className="mt-16 space-y-24 lg:space-y-32">
-          {flagshipProjects.map((p, i) => (
-            <ProjectShowcase key={p.slug} project={p} index={i} />
-          ))}
-        </div>
-
-        <div className="mt-20">
-          <ButtonLink href="/projects">
-            All projects <ArrowRight size={16} />
-          </ButtonLink>
-        </div>
+        <ProjectDoors projects={doors} />
       </div>
     </section>
   );

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { profile } from "@/data/profile";
 
 const links = [
-  { href: "/", label: "Universe" },
+  { href: "/", label: "Home" },
   { href: "/projects", label: "Projects" },
   { href: "/resume", label: "Resume" },
   { href: "/#contact", label: "Contact" },

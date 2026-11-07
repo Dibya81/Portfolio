@@ -1,14 +1,15 @@
 import type { Station } from "@/types";
 
-/** Order matters: it is the camera path through the universe. */
+/** Scroll order of the page; the header shows the active section's label. */
 export const stations: Station[] = [
-  { id: "home", world: "Gateway", label: "Home" },
-  { id: "about", world: "Core", label: "About" },
-  { id: "skills", world: "Laboratory", label: "Skills" },
-  { id: "projects", world: "Project Universe", label: "Projects" },
-  { id: "experience", world: "Foundry", label: "Experience" },
-  { id: "archive", world: "Archive", label: "More work" },
-  { id: "contact", world: "Connection", label: "Contact" },
+  { id: "home", world: "Home", label: "Home" },
+  { id: "experience", world: "Experience", label: "Experience" },
+  { id: "about", world: "About", label: "About" },
+  { id: "skills", world: "Skills", label: "Skills" },
+  { id: "projects", world: "Projects", label: "Projects" },
+  { id: "archive", world: "More work", label: "More work" },
+  { id: "contact", world: "Contact", label: "Contact" },
 ];
 
 export const STATION_COUNT = stations.length;
+

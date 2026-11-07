@@ -227,7 +227,10 @@ export const projects: Project[] = [
     status: "live",
     githubUrl: "https://github.com/Dibya81/Phantom",
     demoUrl: "https://phantom-sigma-rust.vercel.app",
-    screenshots: [],
+    screenshots: [
+      { src: "/projects/phantom/landing.webp", alt: "TRI-ZEROTRO landing page: three platforms for trust, identity and evidence", width: 1440, height: 900, caption: "Live demo landing page" },
+      { src: "/projects/phantom/threats.webp", alt: "The three threats TRI-ZEROTRO answers: identity collapse, payment disputes and evidence tampering", width: 1440, height: 900, caption: "PhantomID, TrustFlow and WitnessChain" },
+    ],
     featured: true,
   },
 

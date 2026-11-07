@@ -26,19 +26,27 @@ export class ImageSequence {
   onProgress?: (loaded: number, total: number) => void;
   onFrameLoaded?: (index: number) => void;
 
+  /** Only every `stride`-th frame is fetched (2 on slow / Save-Data connections); `nearest` fills the gaps. */
+  readonly stride: number;
+  /** Frames that will actually be fetched. */
+  readonly total: number;
+
   constructor(source: SequenceSource, private readonly concurrency = 6) {
     this.count = source.count;
+    this.stride = slowConnection() ? 2 : 1;
+    this.total = Math.ceil(source.count / this.stride);
     this.url = source.url;
     this.images = Array.from({ length: source.count }, () => null);
   }
 
   /** Load keyframes first, then everything else ordered by distance from `around`. */
   start(around = 0) {
-    const keyStep = Math.max(1, Math.floor(this.count / 16));
+    around -= around % this.stride;
+    const keyStep = Math.max(this.stride, Math.floor(this.count / 16 / this.stride) * this.stride);
     const keyframes: number[] = [];
     for (let i = 0; i < this.count; i += keyStep) keyframes.push(i);
     const rest = Array.from({ length: this.count }, (_, i) => i)
-      .filter((i) => i % keyStep !== 0)
+      .filter((i) => i % this.stride === 0 && i % keyStep !== 0)
       .sort((a, b) => Math.abs(a - around) - Math.abs(b - around));
     this.queue = [around, ...keyframes.filter((k) => k !== around), ...rest.filter((r) => r !== around)];
     for (let i = 0; i < this.concurrency; i++) this.pump();
@@ -63,12 +71,16 @@ export class ImageSequence {
         this.loaded++;
         this.onFrameLoaded?.(next);
       }
-      this.onProgress?.(this.loaded, this.count);
+      this.onProgress?.(this.loaded, this.total);
       this.pump();
     };
-    img.onload = () => done(true);
-    img.onerror = () => done(false);
     img.src = this.url(next);
+    // Decode off the main thread before the frame is ever drawn, so scrolling
+    // never pays for a synchronous decode inside drawImage.
+    img.decode().then(
+      () => done(true),
+      () => done(false),
+    );
   }
 
   /** The exact frame if loaded, otherwise the closest loaded one. */
@@ -89,6 +101,14 @@ export class ImageSequence {
     this.queue = [];
     this.images.fill(null);
   }
+}
+
+/** Save-Data, or a 2G/3G effective connection (Network Information API, where supported). */
+function slowConnection(): boolean {
+  if (typeof navigator === "undefined") return false;
+  const c = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
+  if (!c) return false;
+  return Boolean(c.saveData) || ["slow-2g", "2g", "3g"].includes(c.effectiveType ?? "");
 }
 
 export type FitMode = "contain" | "cover";

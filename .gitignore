@@ -38,3 +38,6 @@ resume/.chrome/
 
 # Unlaunched work kept locally (e.g. Qrave screenshots) — never deployed
 private/
+
+# Broken iCloud-evicted copy of node_modules (local only)
+node_modules.icloud-broken.nosync/

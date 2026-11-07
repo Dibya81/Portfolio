@@ -23,7 +23,7 @@ export function AllWorkList({ items }: { items: WorkItem[] }) {
 
   const chip = (active: boolean) =>
     `min-h-11 shrink-0 rounded-full border px-4 font-mono text-xs tracking-wide transition-colors ${
-      active ? "border-ember bg-ember text-void" : "border-line text-fg-muted hover:border-line-strong hover:text-fg"
+      active ? "border-ember bg-ember text-on-accent" : "border-line text-fg-muted hover:border-line-strong hover:text-fg"
     }`;
 
   return (

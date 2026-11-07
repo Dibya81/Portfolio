@@ -16,15 +16,15 @@ export const WorldMenu = forwardRef<HTMLDialogElement, WorldMenuProps>(function 
   return (
     <dialog
       ref={ref}
-      aria-label="Navigate the universe"
-      className="m-0 h-dvh max-h-none w-full max-w-none bg-void/97 p-0 text-fg backdrop:bg-transparent"
+      aria-label="Site menu"
+      className="m-0 h-dvh max-h-none w-full max-w-none bg-void p-0 text-fg backdrop:bg-transparent"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
       <div className="shell flex h-full flex-col py-5">
         <div className="flex h-11 items-center justify-between">
-          <span className="meta">Navigate the universe</span>
+          <span className="meta">Menu</span>
           <button
             type="button"
             onClick={onClose}

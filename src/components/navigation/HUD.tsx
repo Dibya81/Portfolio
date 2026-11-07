@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef } from "react";
-import { stations, STATION_COUNT } from "@/data/navigation";
+import { stations } from "@/data/navigation";
 import { useExperience } from "@/lib/experience-store";
 import { MenuIcon } from "@/components/ui/Icons";
 import { WorldMenu } from "./WorldMenu";
@@ -37,18 +37,14 @@ export function HUD() {
           scrolled ? "border-b border-line bg-void/80 backdrop-blur-sm" : "border-b border-transparent"
         }`}
       >
-        <div className="shell flex h-16 items-center justify-between gap-4">
-          <a href="#home" className="font-display text-2xl leading-none text-fg" aria-label="Dibya Bhusal — back to the start">
+        <div className="shell flex h-16 items-center justify-between gap-4 md:pr-20 xl:pr-12">
+          <a href="#home" className="font-display text-2xl leading-none text-fg" aria-label="Dibya Bhusal, back to the start">
             DB<span className="text-ember">.</span>
           </a>
 
-          <p className="meta flex min-w-0 items-center gap-2" aria-live="polite">
-            <span className="text-ember">
-              {String(index + 1).padStart(2, "0")}
-              <span className="text-fg-faint"> / {String(STATION_COUNT).padStart(2, "0")}</span>
-            </span>
-            <span aria-hidden className="hidden h-px w-6 bg-line-strong sm:block" />
-            <span className="truncate text-fg-muted">{station.world}</span>
+          <p className="meta hidden min-w-0 items-center gap-2 sm:flex" aria-live="polite">
+            <span aria-hidden className="size-1.5 rounded-full bg-ember" />
+            <span className="truncate text-fg-muted">{station.label}</span>
           </p>
 
           <nav aria-label="Primary" className="flex items-center gap-1">

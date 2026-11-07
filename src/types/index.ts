@@ -88,6 +88,10 @@ export interface ExperienceEntry {
   period?: string;
   location?: string;
   summary: string;
+  /** First-person story: how the role started and what is owned now. */
+  story?: string;
+  /** The few fixes worth showing on the home page, one line each. */
+  fixes?: { title: string; line: string }[];
   problems: ProblemSolved[];
   stack: string[];
   screenshots: Screenshot[];

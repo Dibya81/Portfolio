@@ -1,8 +1,6 @@
 import { ExperienceProvider } from "@/components/effects/ExperienceProvider";
-import { UniverseRoot } from "@/components/universe/UniverseRoot";
 import { HUD } from "@/components/navigation/HUD";
-import { ScrollProgress } from "@/components/navigation/ScrollProgress";
-import { WorldHint } from "@/components/navigation/WorldHint";
+import { ThemeRope } from "@/components/effects/ThemeRope";
 import { Gateway } from "@/components/sections/Gateway";
 import { Core } from "@/components/sections/Core";
 import { Laboratory } from "@/components/sections/Laboratory";
@@ -16,19 +14,17 @@ import { SiteFooter } from "@/components/ui/SiteFooter";
 export default function Home() {
   return (
     <ExperienceProvider>
-      <UniverseRoot />
       <HUD />
-      <ScrollProgress />
-      <WorldHint />
+      <ThemeRope />
       <main id="main" className="relative z-10">
         <Gateway />
+        <Foundry />
         <Core />
         <Laboratory />
         <Projects />
-        <Foundry />
         <Archive />
-        <Connection />
         <BeyondCode />
+        <Connection />
       </main>
       <SiteFooter />
     </ExperienceProvider>

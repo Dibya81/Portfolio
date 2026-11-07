@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
 
 interface SectionHeadingProps {
-  index: number;
+  /** @deprecated kept so callers compile; numbering was removed. */
+  index?: number;
   world: string;
   title: ReactNode;
   lead?: ReactNode;
@@ -9,12 +10,11 @@ interface SectionHeadingProps {
   align?: "left" | "right";
 }
 
-export function SectionHeading({ index, world, title, lead, id, align = "left" }: SectionHeadingProps) {
+export function SectionHeading({ world, title, lead, id, align = "left" }: SectionHeadingProps) {
   return (
-    <header className={align === "right" ? "md:ml-auto md:text-right" : ""}>
-      <p className="meta flex items-center gap-3 md:[&]:justify-start">
-        <span className="text-ember">{String(index + 1).padStart(2, "0")}</span>
-        <span aria-hidden className="h-px w-8 bg-line-strong" />
+    <header data-reveal="type" className={align === "right" ? "md:ml-auto md:text-right" : ""}>
+      <p className="meta flex items-center gap-3">
+        <span aria-hidden className="h-px w-8 bg-ember" />
         <span>{world}</span>
       </p>
       <h2
