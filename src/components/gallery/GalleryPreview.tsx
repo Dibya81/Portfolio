@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import World from "./World";
 import { Joystick, useMedia, useMovementKeys } from "./controls";
+import { sfx } from "@/lib/sound";
 import { buildSlots, clearInput, usePalette, type GalleryItem } from "./shared";
 
 /**
@@ -87,7 +88,10 @@ export default function GalleryPreview({ items, moreCount }: { items: GalleryIte
           palette={palette}
           enabled={enabled}
           active={visible}
-          onCharacterClick={() => router.push("/gallery")}
+          onCharacterClick={() => {
+            sfx.enter();
+            router.push("/gallery");
+          }}
           labelRef={label}
         />
       ) : null}
@@ -111,6 +115,7 @@ export default function GalleryPreview({ items, moreCount }: { items: GalleryIte
 
       <Link
         href="/gallery"
+        data-sound="enter"
         className="absolute bottom-4 right-4 inline-flex min-h-11 items-center gap-2 rounded-full bg-ember px-5 text-sm font-medium text-on-accent shadow-lg transition-transform hover:-translate-y-0.5 md:bottom-6 md:right-6"
       >
         Enter the gallery <span aria-hidden>→</span>

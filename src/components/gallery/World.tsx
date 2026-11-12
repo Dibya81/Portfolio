@@ -4,8 +4,9 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { useEffect, useMemo, useRef, useState, type RefObject } from "react";
 import * as THREE from "three";
 import { Character, type Rig } from "./Character";
-import { drawFloor, drawIntroWall, drawMorePoster, drawPoster, drawShadow, toTexture } from "./posters";
+import { drawFloor, drawIntroWall, drawMorePoster, drawPoster, drawShadow, drawFootprint, toTexture } from "./posters";
 import { EMBER, HALL, START, WALK, readMove, type GalleryItem, type Palette, type Slot } from "./shared";
+import { sfx } from "@/lib/sound";
 
 export interface WorldProps {
   items: GalleryItem[];
@@ -28,6 +29,7 @@ export interface WorldProps {
 const MAX_SPEED = 3.4; // m/s
 const PRINTS = 80;
 const PRINT_LIFE = 7; // s
+const STRIDE = 6.2; // walk-cycle radians per metre: one step every π/STRIDE ≈ 0.5 m
 
 /** Positions a DOM element in canvas pixels (kept outside components: it mutates a DOM node). */
 function placeLabel(el: HTMLElement, x: number, y: number, show: boolean) {
@@ -179,8 +181,10 @@ function Player({ slots, mode, palette, enabled, teleportRef, onSpot, onCharacte
     camInit: false,
     printIdx: 0,
     births: new Float32Array(PRINTS).fill(-100),
+    shown: new Uint8Array(PRINTS),
   });
   const shadowTex = useMemo(() => toTexture(drawShadow()), []);
+  const printTex = useMemo(() => toTexture(drawFootprint()), []);
   const tmp = useMemo(
     () => ({
       cam: new THREE.Vector3(),
@@ -247,7 +251,7 @@ function Player({ slots, mode, palette, enabled, teleportRef, onSpot, onCharacte
 
     // --- walk cycle: phase follows distance travelled, so feet don't skate ---
     const prev = s.phase;
-    s.phase += speed * dt * 3.3;
+    s.phase += speed * dt * STRIDE;
     s.walk += ((speed > 0.1 ? Math.min(1, speed / 2.2) : 0) - s.walk) * (1 - Math.exp(-dt * 10));
     const sw = Math.sin(s.phase) * s.walk;
     if (r.root) {
@@ -276,25 +280,40 @@ function Player({ slots, mode, palette, enabled, teleportRef, onSpot, onCharacte
     const pm = prints.current;
     if (pm) {
       if (Math.floor(prev / Math.PI) !== Math.floor(s.phase / Math.PI) && speed > 0.4) {
+        // foot = 1 is the character's left (offset along (cos yaw, -sin yaw)).
         const foot = Math.floor(s.phase / Math.PI) % 2 === 0 ? 1 : -1;
         const i = s.printIdx;
         s.printIdx = (i + 1) % PRINTS;
         s.births[i] = t;
+        s.shown[i] = 1;
+        sfx.step(foot, (speed / MAX_SPEED) * (mode === "preview" ? 0.6 : 1));
         const o = tmp.obj;
         o.position.set(s.pos.x + Math.cos(s.yaw) * 0.12 * foot, 0.008, s.pos.z - Math.sin(s.yaw) * 0.12 * foot);
-        o.rotation.set(-Math.PI / 2, 0, s.yaw);
-        o.scale.set(0.075, 0.13, 1);
+        // +π turns the texture's toe (+Y) to face the walking direction once laid flat.
+        o.rotation.set(-Math.PI / 2, 0, s.yaw + Math.PI);
+        // The texture is a right foot; mirror it for the left.
+        o.scale.set(foot === 1 ? -0.16 : 0.16, 0.3, 1);
         o.updateMatrix();
         pm.setMatrixAt(i, o.matrix);
         pm.instanceMatrix.needsUpdate = true;
       }
       tmp.c1.set(P.print);
       tmp.c2.set(P.floor);
+      let hid = false;
       for (let i = 0; i < PRINTS; i++) {
         const f = clamp((t - s.births[i]) / PRINT_LIFE, 0, 1);
         tmp.c.copy(tmp.c1).lerp(tmp.c2, f * f);
         pm.setColorAt(i, tmp.c);
+        if (f >= 1 && s.shown[i]) {
+          // fully faded: drop it so no ghost outline lingers on the lit floor
+          s.shown[i] = 0;
+          tmp.obj.scale.setScalar(0);
+          tmp.obj.updateMatrix();
+          pm.setMatrixAt(i, tmp.obj.matrix);
+          hid = true;
+        }
       }
+      if (hid) pm.instanceMatrix.needsUpdate = true;
       if (pm.instanceColor) pm.instanceColor.needsUpdate = true;
     }
 
@@ -357,9 +376,9 @@ function Player({ slots, mode, palette, enabled, teleportRef, onSpot, onCharacte
         <planeGeometry args={[1.3, 1.3]} />
         <meshBasicMaterial map={shadowTex} transparent depthWrite={false} opacity={palette.light ? 0.75 : 0.95} />
       </mesh>
-      <instancedMesh ref={prints} args={[undefined, undefined, PRINTS]} renderOrder={1}>
-        <circleGeometry args={[1, 20]} />
-        <meshBasicMaterial depthWrite={false} polygonOffset polygonOffsetFactor={-2} toneMapped={false} />
+      <instancedMesh ref={prints} args={[undefined, undefined, PRINTS]} renderOrder={1} frustumCulled={false}>
+        <planeGeometry args={[1, 1]} />
+        <meshBasicMaterial map={printTex} transparent alphaTest={0.02} depthWrite={false} polygonOffset polygonOffsetFactor={-2} toneMapped={false} />
       </instancedMesh>
       {slots.map((sl, i) => (
         <mesh

@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import World from "./World";
 import { Joystick, Key, useMedia, useMovementKeys } from "./controls";
+import { SoundToggle } from "@/components/effects/SoundLayer";
+import { sfx, startMusic, stopMusic } from "@/lib/sound";
 import { buildSlots, clearInput, usePalette, type GalleryItem, type Slot } from "./shared";
 
 /** Full-screen gallery: walk the hall, stop on a circle, press Enter for details. */
@@ -24,6 +26,12 @@ export default function GalleryExperience({ items, moreCount }: { items: Gallery
     enabled.current = detail === null && !menu;
     if (!enabled.current) clearInput();
   }, [detail, menu]);
+
+  // Ambient score while you're in the hall (starts once audio is unlocked).
+  useEffect(() => {
+    startMusic();
+    return () => stopMusic();
+  }, []);
 
   // The gallery owns the viewport: no page scroll behind it.
   useEffect(() => {
@@ -48,16 +56,29 @@ export default function GalleryExperience({ items, moreCount }: { items: Gallery
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         e.preventDefault();
-        if (detail !== null) setDetail(null);
-        else setMenu((m) => !m);
+        if (detail !== null) {
+          sfx.close();
+          setDetail(null);
+        } else {
+          if (menu) sfx.close();
+          else sfx.open();
+          setMenu((m) => !m);
+        }
       } else if (e.key === "Enter" && !menu) {
         // Without this, Chrome also "clicks" whatever gets focus next (the panel's close button).
         e.preventDefault();
-        if (detail !== null) setDetail(null);
-        else if (spot !== null) setDetail(spot);
+        if (detail !== null) {
+          sfx.close();
+          setDetail(null);
+        } else if (spot !== null) {
+          sfx.open();
+          setDetail(spot);
+        }
       } else if (detail !== null && (e.key === "ArrowRight" || e.key === "ArrowLeft")) {
         e.preventDefault();
-        go(detail + (e.key === "ArrowRight" ? 1 : -1));
+        const dir = e.key === "ArrowRight" ? 1 : -1;
+        sfx.swoosh(dir);
+        go(detail + dir);
       }
     };
     window.addEventListener("keydown", onKey);
@@ -65,6 +86,11 @@ export default function GalleryExperience({ items, moreCount }: { items: Gallery
   }, [detail, menu, spot, go]);
 
   const onReady = useCallback((urls: string[]) => setPosters(urls), []);
+  // A soft chime when you step onto a frame's circle (not while a panel is open).
+  const onSpot = useCallback((i: number | null) => {
+    setSpot(i);
+    if (i !== null && enabled.current) sfx.chime();
+  }, []);
 
   return (
     <div className="fixed inset-0 bg-void text-fg">
@@ -77,7 +103,7 @@ export default function GalleryExperience({ items, moreCount }: { items: Gallery
         enabled={enabled}
         teleportRef={teleport}
         active
-        onSpot={setSpot}
+        onSpot={onSpot}
         onReady={onReady}
       />
 
@@ -101,19 +127,24 @@ export default function GalleryExperience({ items, moreCount }: { items: Gallery
           <span aria-hidden>←</span> Back to site
         </Link>
         <p className="hidden font-mono text-[0.7rem] uppercase tracking-[0.3em] text-fg-muted md:block">Projects gallery</p>
-        <button
-          type="button"
-          onClick={() => setMenu(true)}
-          className="inline-flex min-h-11 items-center gap-2 rounded-full border border-line-strong bg-void/60 px-4 text-sm backdrop-blur-md transition-colors hover:bg-fg/[0.08]"
-        >
-          Menu {touch ? null : <Key>Esc</Key>}
-        </button>
+        <div className="flex items-center gap-2">
+          <SoundToggle className="max-sm:px-3 max-sm:[&>span:last-child]:hidden" />
+          <button
+            type="button"
+            data-sound="open"
+            onClick={() => setMenu(true)}
+            className="inline-flex min-h-11 items-center gap-2 rounded-full border border-line-strong bg-void/60 px-4 text-sm backdrop-blur-md transition-colors hover:bg-fg/[0.08]"
+          >
+            Menu {touch ? null : <Key>Esc</Key>}
+          </button>
+        </div>
       </header>
 
       {/* see-details prompt */}
       {spot !== null && detail === null && !menu ? (
         <button
           type="button"
+          data-sound="open"
           onClick={() => setDetail(spot)}
           className="gallery-in absolute left-1/2 top-20 inline-flex min-h-11 -translate-x-1/2 items-center gap-3 rounded-full bg-fg px-5 text-sm font-medium text-void shadow-xl md:top-24"
         >
@@ -175,6 +206,7 @@ export default function GalleryExperience({ items, moreCount }: { items: Gallery
                 <li key={i}>
                   <button
                     type="button"
+                    data-sound="next"
                     onClick={() => {
                       teleport.current = i;
                       setMenu(false);
@@ -189,7 +221,7 @@ export default function GalleryExperience({ items, moreCount }: { items: Gallery
               ))}
             </ol>
             <div className="mt-8 flex flex-wrap gap-3">
-              <button type="button" onClick={() => setMenu(false)} className="inline-flex min-h-11 items-center rounded-full bg-fg px-5 text-sm font-medium text-void">
+              <button type="button" data-sound="close" onClick={() => setMenu(false)} className="inline-flex min-h-11 items-center rounded-full bg-fg px-5 text-sm font-medium text-void">
                 Keep walking
               </button>
               <Link href="/" className="inline-flex min-h-11 items-center rounded-full border border-line-strong px-5 text-sm">
@@ -231,16 +263,17 @@ function DetailPanel({
       <button
         ref={closeRef}
         type="button"
+        data-sound="close"
         onClick={onClose}
         aria-label="Close details"
         className="fixed right-4 top-4 z-10 grid size-11 place-items-center rounded-full border border-line-strong bg-void/70 text-xl md:right-6 md:top-6"
       >
         ×
       </button>
-      <button type="button" onClick={onPrev} aria-label="Previous frame" className={`${arrow} left-3 max-md:hidden md:left-6`}>
+      <button type="button" data-sound="prev" onClick={onPrev} aria-label="Previous frame" className={`${arrow} left-3 max-md:hidden md:left-6`}>
         ←
       </button>
-      <button type="button" onClick={onNext} aria-label="Next frame" className={`${arrow} right-3 max-md:hidden md:right-6`}>
+      <button type="button" data-sound="next" onClick={onNext} aria-label="Next frame" className={`${arrow} right-3 max-md:hidden md:right-6`}>
         →
       </button>
 
@@ -309,10 +342,10 @@ function DetailPanel({
 
       {/* phone: prev / next bar */}
       <div className="fixed inset-x-0 bottom-0 flex gap-3 border-t border-line bg-void/90 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur-md md:hidden">
-        <button type="button" onClick={onPrev} className="min-h-11 flex-1 rounded-full border border-line-strong text-sm">
+        <button type="button" data-sound="prev" onClick={onPrev} className="min-h-11 flex-1 rounded-full border border-line-strong text-sm">
           ← Previous
         </button>
-        <button type="button" onClick={onNext} className="min-h-11 flex-1 rounded-full border border-line-strong text-sm">
+        <button type="button" data-sound="next" onClick={onNext} className="min-h-11 flex-1 rounded-full border border-line-strong text-sm">
           Next →
         </button>
       </div>

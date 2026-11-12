@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useSyncExternalStore } from "react";
 import { inkTransition, prepareInk } from "@/lib/ink-transition";
+import { sfx } from "@/lib/sound";
 
 type Theme = "dark" | "light";
 
@@ -110,6 +111,7 @@ export function ThemeRope() {
       } catch {}
     };
 
+    sfx.ink(next === "light");
     const h = handle.current?.getBoundingClientRect();
     if (!h) {
       apply();
@@ -124,14 +126,20 @@ export function ThemeRope() {
     const s = sim.current;
     const startY = e.clientY;
     let moved = 0;
+    let lastPull = 0;
     s.dragging = true;
     e.currentTarget.setPointerCapture(e.pointerId);
+    sfx.ropeGrab();
     kick();
 
     const move = (ev: PointerEvent) => {
       const dy = Math.max(0, ev.clientY - startY);
       moved = Math.max(moved, dy);
       s.pull = MAX_PULL * Math.tanh(dy / MAX_PULL); // resists as it stretches
+      if (Math.abs(s.pull - lastPull) > 6) {
+        lastPull = s.pull;
+        sfx.ropeCreak(s.pull / MAX_PULL);
+      }
       kick();
     };
     const up = () => {
@@ -143,8 +151,9 @@ export function ThemeRope() {
       if (moved < 4) s.vp = 9;
       if (moved < 4 || s.pull > TRIGGER) {
         s.vs += (Math.random() > 0.5 ? 1 : -1) * 3.5;
+        sfx.ropeSnap();
         toggle();
-      }
+      } else sfx.ropeLetGo();
       kick();
     };
     window.addEventListener("pointermove", move);
@@ -153,12 +162,13 @@ export function ThemeRope() {
   };
 
   return (
-    <div ref={rope} className="rope no-print" onPointerEnter={() => ((sim.current.vs += 1.6), kick())}>
+    <div ref={rope} className="rope no-print" onPointerEnter={() => ((sim.current.vs += 1.6), sfx.ropeSwing(), kick())}>
       <div className="rope-cord" aria-hidden />
       <button
         ref={handle}
         type="button"
         className="rope-handle"
+        data-sound="off"
         aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
         onPointerDown={onPointerDown}
         onKeyDown={(e) => {
@@ -166,6 +176,7 @@ export function ThemeRope() {
             e.preventDefault();
             sim.current.vp = 9;
             kick();
+            sfx.ropeSnap();
             toggle();
           }
         }}

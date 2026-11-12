@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Instrument_Serif, Inter_Tight, JetBrains_Mono } from "next/font/google";
 import { profile, education } from "@/data/profile";
 import { siteDescription, siteTitle, siteUrl } from "@/lib/site";
+import { SoundLayer } from "@/components/effects/SoundLayer";
 import "./globals.css";
 
 const display = Instrument_Serif({
@@ -97,6 +98,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           Skip to content
         </a>
         {children}
+        <SoundLayer />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}

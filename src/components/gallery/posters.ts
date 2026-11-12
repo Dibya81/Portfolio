@@ -291,6 +291,35 @@ export function drawShadow() {
   return c;
 }
 
+/** A right-foot sole print (toe at the top): white on transparent, tinted per instance. */
+export function drawFootprint() {
+  const [c, ctx] = canvas(96, 192);
+  ctx.fillStyle = "#fff";
+  ctx.shadowColor = "#fff";
+  ctx.shadowBlur = 5;
+  // ball of the foot, a little wider on the big-toe (inner, left) side
+  ctx.beginPath();
+  ctx.ellipse(46, 62, 30, 44, -0.12, 0, Math.PI * 2);
+  ctx.fill();
+  // heel
+  ctx.beginPath();
+  ctx.ellipse(50, 150, 23, 29, 0.05, 0, Math.PI * 2);
+  ctx.fill();
+  // toe pads
+  const toes: [number, number, number][] = [
+    [30, 14, 9],
+    [47, 10, 7.5],
+    [61, 14, 6.5],
+    [72, 21, 5.5],
+  ];
+  for (const [x, y, r] of toes) {
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  return c;
+}
+
 export function toTexture(c: HTMLCanvasElement, repeat?: [number, number]) {
   const t = new THREE.CanvasTexture(c);
   t.colorSpace = THREE.SRGBColorSpace;
