@@ -84,8 +84,10 @@ const personJsonLd = {
 /**
  * Runs before first paint: picks the saved theme (or the OS preference) so
  * there is no flash, and marks JS as running so scroll-reveal styles apply.
+ * A reload always starts at the top of the page (no restored scroll, no
+ * section hash); normal links to /#section still land on their section.
  */
-const themeScript = `(function(){var d=document.documentElement;var t;try{t=localStorage.getItem("theme")}catch(e){}if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"}d.dataset.theme=t;d.classList.add("js")})()`;
+const themeScript = `(function(){var d=document.documentElement;var t;try{t=localStorage.getItem("theme")}catch(e){}if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"}d.dataset.theme=t;d.classList.add("js");try{var n=performance.getEntriesByType("navigation")[0];if(n&&n.type==="reload"){history.scrollRestoration="manual";if(location.hash)history.replaceState(history.state,"",location.pathname+location.search);scrollTo(0,0);addEventListener("load",function(){scrollTo(0,0)})}}catch(e){}})()`;
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
