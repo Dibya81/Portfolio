@@ -145,6 +145,33 @@ body::after {
   animation: none;
   mix-blend-mode: normal;
 }
+/* Ink-spill theme switch (src/lib/ink-transition.ts): the new theme shows
+   through a mask the script redraws each frame. */
+.ink-switch::view-transition-new(root),
+.ink-switch::view-transition-old(root) {
+  -webkit-mask-image: var(--ink);
+  mask-image: var(--ink);
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+/* New theme = inside the ink (luminance); old theme = everything but the band. */
+.ink-switch::view-transition-new(root) {
+  -webkit-mask-source-type: luminance;
+  mask-mode: luminance;
+}
+/* What shows through the band ahead of the front: a hot, burning edge. */
+.ink-switch::view-transition {
+  background: radial-gradient(
+    circle at var(--ink-x, 100%) var(--ink-y, 0%),
+    #fff1d6 0%,
+    #ffb070 12%,
+    var(--color-ember) 34%,
+    #c2290a 70%,
+    #5a0f02 100%
+  );
+}
 
 /* ───────── Blueprint reveal ─────────
  * Every [data-reveal] element is "built" when it scrolls in:
@@ -396,174 +423,29 @@ body::after {
   }
 }
 
-/* ───────── Doors (projects) ───────── */
-.door {
-  display: block;
-  width: 100%;
-  text-align: left;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-.door-frame {
-  position: relative;
-  display: block;
-  aspect-ratio: 3 / 5;
-  perspective: 1400px;
-  border-radius: 50% 50% 0.5rem 0.5rem / 26% 26% 0.5rem 0.5rem;
-  background: #0d0c0b;
-  box-shadow:
-    inset 0 0 0 6px color-mix(in oklab, var(--color-fg) 10%, transparent),
-    0 30px 60px -30px rgb(0 0 0 / 0.6);
-}
-/* What's behind the door: warm light + a dim look at the project. */
-.door-inside {
-  position: absolute;
-  inset: 6px;
-  overflow: hidden;
-  border-radius: inherit;
-  background:
-    radial-gradient(60% 45% at 50% 75%, color-mix(in oklab, var(--accent) 55%, #ffb36b) 0%, transparent 70%),
-    linear-gradient(#0d0c0b, #1a1410);
-}
-.door-inside img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.32;
-  mix-blend-mode: screen;
-}
-.door-leaf {
-  position: absolute;
-  inset: 6px;
-  border-radius: inherit;
-  transform-origin: left center;
-  transform-style: preserve-3d;
-  transition: transform 0.8s var(--ease-cinema);
-  background:
-    linear-gradient(90deg, rgb(0 0 0 / 0.22), transparent 18%, transparent 82%, rgb(0 0 0 / 0.28)),
-    linear-gradient(180deg, color-mix(in oklab, var(--accent) 92%, #fff), color-mix(in oklab, var(--accent) 78%, #000));
-  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.12);
-}
-.door-panel {
-  position: absolute;
-  left: 16%;
-  right: 16%;
-  border-radius: 999px 999px 0.4rem 0.4rem;
-  box-shadow:
-    inset 0 2px 0 rgb(255 255 255 / 0.18),
-    inset 0 -2px 6px rgb(0 0 0 / 0.25);
-}
-.door-panel:nth-child(1) {
-  top: 9%;
-  height: 34%;
-}
-.door-panel:nth-child(2) {
-  top: 56%;
-  height: 34%;
-  border-radius: 0.4rem;
-}
-.door-plate {
-  position: absolute;
-  left: 50%;
-  top: 46%;
-  transform: translate(-50%, -50%);
-  min-width: 58%;
-  padding: 0.35rem 0.6rem;
-  border-radius: 0.3rem;
-  background: #f6d46b;
-  color: #24190a;
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.08em;
-  text-align: center;
-  text-transform: uppercase;
-  box-shadow: 0 2px 0 rgb(0 0 0 / 0.25);
-}
-.door-knob {
-  position: absolute;
-  right: 11%;
-  top: 52%;
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #fff4c9, #c99a2e 60%, #6b4a10);
-  box-shadow: 0 2px 4px rgb(0 0 0 / 0.4);
-}
-@media (hover: hover) {
-  .door:hover .door-leaf {
-    transform: rotateY(-32deg);
-  }
-}
-.door:focus-visible .door-leaf {
-  transform: rotateY(-32deg);
-}
-.door[data-open="true"] .door-leaf {
-  transform: rotateY(-108deg);
-  transition-duration: 0.9s;
-}
-/* Phones: the door in the middle of the swipe strip cracks open on its own. */
-@media (max-width: 767px) {
-  .door[data-active="true"]:not([data-open="true"]) .door-leaf {
-    transform: rotateY(-32deg);
-  }
-  .door-plate {
-    font-size: 0.7rem;
-  }
-}
+/* ───────── 3D gallery overlays ───────── */
 .no-scrollbar {
   scrollbar-width: none;
 }
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
-
-/* Walking through: the whole row zooms toward the opened door. */
-.door-row {
-  transition:
-    transform 0.9s cubic-bezier(0.7, 0, 0.3, 1),
-    opacity 0.9s ease;
+.gallery-in {
+  animation: gallery-in 0.45s var(--ease-cinema) both;
 }
-.door-row[data-zoom="true"] {
-  transform: scale(2.4);
-  opacity: 0;
-}
-
-dialog.door-dialog {
-  margin: 0;
-  width: 100%;
-  max-width: none;
-  height: 100dvh;
-  max-height: none;
-  padding: 0;
-  border: 0;
-  background: var(--color-void);
-  color: var(--color-fg);
-  overflow-y: auto;
-  overscroll-behavior: contain;
-}
-dialog.door-dialog::backdrop {
-  background: transparent;
-}
-dialog.door-dialog[open] {
-  animation: door-in 0.75s var(--ease-cinema);
-}
-@keyframes door-in {
+@keyframes gallery-in {
   from {
-    clip-path: inset(var(--t, 40%) var(--r, 40%) var(--b, 20%) var(--l, 40%) round 40% 40% 0 0);
-  }
-  to {
-    clip-path: inset(0 0 0 0 round 0);
-  }
-}
-dialog.door-dialog[data-closing="true"] {
-  animation: door-out 0.35s ease forwards;
-}
-@keyframes door-out {
-  to {
     opacity: 0;
-    transform: scale(0.98);
+    transform: translateY(10px);
+  }
+}
+.gallery-bubble {
+  display: inline-block;
+  animation: gallery-bob 1.8s ease-in-out infinite;
+}
+@keyframes gallery-bob {
+  50% {
+    transform: translateY(-5px);
   }
 }
 

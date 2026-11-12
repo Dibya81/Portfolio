@@ -19,7 +19,7 @@ export function Archive() {
               More work, <em className="text-ember-soft">labelled honestly.</em>
             </>
           }
-          lead="Fraud detection, vision safety, healthcare agents and more."
+          lead="Document platforms, healthcare agents, a 3D cloud UI, blockchain tools and more."
         />
         <ShowMore count={archiveProjects.length}>
           <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

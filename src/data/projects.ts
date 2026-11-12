@@ -505,7 +505,29 @@ export const projects: Project[] = [
 ];
 
 export const flagshipProjects = projects.filter((p) => p.featured);
-export const archiveProjects = projects.filter((p) => !p.featured);
+
+/**
+ * The nine projects hung in the 3D gallery, chosen so that between them they
+ * cover the stack: Python/FastAPI, TypeScript/Next.js, Kotlin, Move/Aptos,
+ * Solana/Anchor, LangGraph and local LLMs, AWS + Supabase + Firebase, computer
+ * vision (OpenCV, YOLO), MQTT/ESP32 hardware, Three.js and Postgres.
+ */
+export const GALLERY_SLUGS = [
+  "project-117",
+  "neighborhealth",
+  "aptos-synapse",
+  "phantom",
+  "consensus-engine",
+  "stockrescue",
+  "sitesentinel",
+  "kavach",
+  "aipas",
+] as const;
+export const galleryProjects = GALLERY_SLUGS.map((s) => projects.find((p) => p.slug === s)).filter(
+  (p): p is Project => Boolean(p),
+);
+/** Everything not hung in the gallery. */
+export const archiveProjects = projects.filter((p) => !(GALLERY_SLUGS as readonly string[]).includes(p.slug));
 
 export function getProject(slug: string): Project | undefined {
   return projects.find((p) => p.slug === slug);

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useSyncExternalStore } from "react";
+import { inkTransition, prepareInk } from "@/lib/ink-transition";
 
 type Theme = "dark" | "light";
 
@@ -87,6 +88,18 @@ export function ThemeRope() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Pre-build the ink shape in idle time (and again after resizes) so the
+  // switch starts the moment the cord is pulled.
+  useEffect(() => {
+    const prep = () => {
+      const h = handle.current?.getBoundingClientRect();
+      if (h) prepareInk(h.left + h.width / 2, h.top + h.height / 2);
+    };
+    prep();
+    window.addEventListener("resize", prep);
+    return () => window.removeEventListener("resize", prep);
+  }, []);
+
   const toggle = () => {
     const root = document.documentElement;
     const next: Theme = root.dataset.theme === "light" ? "dark" : "light";
@@ -97,22 +110,13 @@ export function ThemeRope() {
       } catch {}
     };
 
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const doc = document as Document & { startViewTransition?: (cb: () => void) => { ready: Promise<void> } };
     const h = handle.current?.getBoundingClientRect();
-    if (!doc.startViewTransition || reduced || !h) {
+    if (!h) {
       apply();
       return;
     }
-    const x = h.left + h.width / 2;
-    const y = h.top + h.height / 2;
-    const r = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
-    doc.startViewTransition(apply).ready.then(() => {
-      root.animate(
-        { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${r}px at ${x}px ${y}px)`] },
-        { duration: 750, easing: "cubic-bezier(0.16, 1, 0.3, 1)", pseudoElement: "::view-transition-new(root)" },
-      );
-    });
+    // Ink spills out from the rope handle.
+    inkTransition(apply, h.left + h.width / 2, h.top + h.height / 2);
   };
 
   // Pointer drag: follow the finger downwards, release past TRIGGER to switch.
