@@ -212,6 +212,86 @@ function takeField(x: number, y: number) {
   return buildField(W, H, x, y);
 }
 
+/** Safari and all iOS browsers (they're all WebKit, incl. Chrome on iOS). */
+function isWebKit() {
+  const ua = navigator.userAgent;
+  return /iPhone|iPad|iPod/.test(ua) || (/AppleWebKit/.test(ua) && !/Chrome\/|Chromium|Edg\//.test(ua));
+}
+
+const thump = (root: HTMLElement) =>
+  root.animate(
+    { transform: ["scale(1)", "scale(1.022) rotate(-0.25deg)", "scale(0.996)", "scale(1)"] },
+    { duration: 620, easing: "cubic-bezier(0.2, 0.8, 0.2, 1)", pseudoElement: "::view-transition-image-pair(root)" },
+  );
+
+/**
+ * WebKit path: the same spill as a lobed, fingered blob clip-path.
+ * New theme = inside the blob; old theme has a slightly bigger hole, so the
+ * ember backdrop burns through the band between them.
+ */
+function blobTransition(doc: VTDoc, apply: () => void, x: number, y: number) {
+  const root = document.documentElement;
+  const W = window.innerWidth;
+  const H = window.innerHeight;
+  const N = 180;
+  const seed = (Math.random() * 1e6) | 0;
+  const maxD = Math.hypot(Math.max(x, W - x), Math.max(y, H - y));
+
+  // Fixed silhouette per angle: broad lobes plus sharp ink fingers.
+  const ca = new Float32Array(N);
+  const sa = new Float32Array(N);
+  const shape = new Float32Array(N);
+  let minShape = Infinity;
+  for (let i = 0; i < N; i++) {
+    const a = (i / N) * Math.PI * 2;
+    ca[i] = Math.cos(a);
+    sa[i] = Math.sin(a);
+    const lobe = fbm(ca[i] * 1.7 + 3, sa[i] * 1.7 + 9, seed, 3) - 0.5;
+    const finger = Math.max(0, fbm(ca[i] * 6.5 + 1, sa[i] * 6.5 + 4, seed + 7, 2) - 0.54) * 2;
+    shape[i] = 1 + lobe * 0.6 + finger * 0.3;
+    if (shape[i] < minShape) minShape = shape[i];
+  }
+  const R = (maxD / minShape) * 1.06; // at p = 1 even the shortest lobe clears the far corner
+
+  const K = 36;
+  const fresh: string[] = [];
+  const old: string[] = [];
+  // Outer frame well beyond the viewport (iOS snapshots extend under the toolbars).
+  const frame = `${-W}px ${-H}px, ${2 * W}px ${-H}px, ${2 * W}px ${2 * H}px, ${-W}px ${2 * H}px, ${-W}px ${-H}px`;
+  for (let k = 0; k < K; k++) {
+    const p = k / (K - 1);
+    const e = ease(p);
+    const band = p < 1 ? 10 + 34 * Math.sin(Math.min(p * 1.2, 1) * Math.PI) : 0;
+    const inner: string[] = [];
+    const outer: string[] = [];
+    for (let i = 0; i < N; i++) {
+      // A little boil along the edge while it spreads.
+      const wob = (fbm(ca[i] * 3 + p * 1.6, sa[i] * 3 - p * 1.2, seed + 31, 2) - 0.5) * 0.12 * (1 - p);
+      const r = R * e * (shape[i] + wob);
+      inner.push(`${(x + ca[i] * r).toFixed(1)}px ${(y + sa[i] * r).toFixed(1)}px`);
+      const ro = r + band;
+      outer.push(`${(x + ca[i] * ro).toFixed(1)}px ${(y + sa[i] * ro).toFixed(1)}px`);
+    }
+    fresh.push(`polygon(${inner.join(", ")})`);
+    // evenodd + a bridge walked there and back = a frame with a blob-shaped hole.
+    old.push(`polygon(evenodd, ${frame}, ${outer.join(", ")}, ${outer[0]}, ${-W}px ${-H}px)`);
+  }
+
+  root.style.setProperty("--ink-x", `${x}px`);
+  root.style.setProperty("--ink-y", `${y}px`);
+  root.classList.add("ink-clip");
+  const vt = doc.startViewTransition!(apply);
+  vt.ready
+    .then(() => {
+      const opts = { duration: DURATION, easing: "linear", fill: "forwards" } as const;
+      root.animate({ clipPath: fresh }, { ...opts, pseudoElement: "::view-transition-new(root)" });
+      root.animate({ clipPath: old }, { ...opts, pseudoElement: "::view-transition-old(root)" });
+      thump(root);
+    })
+    .catch(() => {});
+  vt.finished.finally(() => root.classList.remove("ink-clip"));
+}
+
 /**
  * Switch the theme with an ink spill from (x, y). Falls back to an instant
  * switch when View Transitions or motion are unavailable.
@@ -222,6 +302,14 @@ export function inkTransition(apply: () => void, x: number, y: number) {
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (!doc.startViewTransition || reduced) {
     apply();
+    return;
+  }
+
+  // Safari / every iOS browser: masks on view-transition snapshots aren't
+  // honoured (the whole screen showed the ember backdrop), so draw the spill
+  // as an animated blob clip-path instead.
+  if (isWebKit()) {
+    blobTransition(doc, apply, x, y);
     return;
   }
 
@@ -270,10 +358,7 @@ export function inkTransition(apply: () => void, x: number, y: number) {
       // Keeps the transition alive for the full spill; the mask does the work.
       root.animate({ opacity: [1, 1] }, { duration: DURATION, pseudoElement: "::view-transition-new(root)" });
       // The thump as the ink lands.
-      root.animate(
-        { transform: ["scale(1)", "scale(1.022) rotate(-0.25deg)", "scale(0.996)", "scale(1)"] },
-        { duration: 620, easing: "cubic-bezier(0.2, 0.8, 0.2, 1)", pseudoElement: "::view-transition-image-pair(root)" },
-      );
+      thump(root);
       const t0 = performance.now();
       const step = (now: number) => {
         const p = Math.min((now - t0) / DURATION, 1);

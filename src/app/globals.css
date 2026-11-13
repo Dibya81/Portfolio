@@ -161,7 +161,12 @@ body::after {
   -webkit-mask-source-type: luminance;
   mask-mode: luminance;
 }
+/* WebKit variant: blob clip-paths animated by script; hidden until it starts. */
+.ink-clip::view-transition-new(root) {
+  clip-path: circle(0 at var(--ink-x, 100%) var(--ink-y, 0%));
+}
 /* What shows through the band ahead of the front: a hot, burning edge. */
+.ink-clip::view-transition,
 .ink-switch::view-transition {
   background: radial-gradient(
     circle at var(--ink-x, 100%) var(--ink-y, 0%),
